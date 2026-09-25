@@ -77,15 +77,15 @@
         </div>
     </div>
 
-    <!-- Order Receipt / Details Modal (Checkout Style with VAT & Shipping) -->
+    <!-- Order Receipt / Details Modal (Synced width with userOrder modal) -->
     <div class="notif-modal-overlay" id="orderReceiptModalOverlay" style="z-index: 1300;">
-        <div class="notif-modal-content" style="max-width: 480px;">
+        <div class="notif-modal-content">
             <div class="notif-modal-header">
                 <h3>Order Summary</h3>
                 <button type="button" class="close-notif-modal" id="closeReceiptModal">&times;</button>
             </div>
-            <div class="notif-modal-body" id="receiptModalBody" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- Dito papasok ang uniform checkout-style details katulad sa userCart -->
+            <div class="notif-modal-body" id="receiptModalBody">
+                <!-- Dito papasok ang uniform checkout-style details -->
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@
     <!-- Dashboard Container -->
     <div class="dashboard-wrapper">
         
-        <!-- Synced Sidebar (Katulad ng sa userOrder) -->
+        <!-- Synced Sidebar -->
         <aside class="dashboard-sidebar">
             <div class="sidebar-menu-group">
                 <a href="userDashboard.html" class="sidebar-item">
@@ -289,6 +289,12 @@
             let vatAmount = itemTotalWithoutShipping * 0.12;
             let subtotal = itemTotalWithoutShipping - vatAmount;
 
+            const customerName = order.customerName || order.name || 'Juan Dela Cruz';
+            const contactNumber = order.contactNumber || '09123456789';
+            const shippingAddress = order.shipping || 'Taytay, Rizal';
+            const paymentMethod = order.paymentMethod || order.payment || 'GCash';
+            const receiptImg = order.receiptImage || order.receipt || '';
+
             receiptBody.innerHTML = `
                 <div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 10px; margin-bottom: 5px;">
                     <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Order ID: <strong>#${order.id}</strong></p>
@@ -296,8 +302,8 @@
                     <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Status: <span class="status-badge ${statusClass}" style="display: inline-block; padding: 2px 8px; font-size: 0.75rem;">${displayStatus}</span></p>
                 </div>
 
-                <div class="summary-section-box" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div class="summary-section-title" style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                <div class="summary-section-box">
+                    <div class="summary-section-title">
                         <i class="fas fa-box-open"></i> Product Information
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
@@ -309,38 +315,62 @@
                     </div>
                 </div>
 
-                <div class="summary-section-box" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                <div class="summary-section-box">
+                    <div class="summary-item-row">
                         <span>Subtotal</span>
                         <span>₱${subtotal.toFixed(2)}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                    <div class="summary-item-row">
                         <span>VAT (12%)</span>
                         <span>₱${vatAmount.toFixed(2)}</span>
                     </div>
                 </div>
 
-                <div class="summary-section-box" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div class="summary-section-title" style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                <div class="summary-section-box">
+                    <div class="summary-section-title">
                         <i class="fas fa-truck"></i> Delivery Information
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                    <div class="summary-item-row">
                         <span>Delivery Method</span>
                         <span>Meet-up</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <div class="summary-item-row">
                         <span>Location</span>
-                        <span>${order.shipping || 'Taytay, Rizal'}</span>
+                        <span>${shippingAddress}</span>
                     </div>
                 </div>
 
-                <div class="summary-section-box" style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div class="summary-section-title" style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                <div class="summary-section-box">
+                    <div class="summary-section-title">
+                        <i class="fas fa-user-circle"></i> Personal Information
+                    </div>
+                    <div class="summary-item-row">
+                        <span>Name</span>
+                        <strong style="color: #000;">${customerName}</strong>
+                    </div>
+                    <div class="summary-item-row">
+                        <span>Contact Number</span>
+                        <strong style="color: #000;">${contactNumber}</strong>
+                    </div>
+                    <div class="summary-item-row">
+                        <span>Address</span>
+                        <span style="text-align: right; max-width: 220px;">${shippingAddress}</span>
+                    </div>
+                </div>
+
+                <div class="summary-section-box">
+                    <div class="summary-section-title">
                         <i class="fas fa-credit-card"></i> Payment Information
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <div class="summary-item-row">
                         <span>Method</span>
-                        <strong style="text-transform: uppercase;">${order.paymentMethod || order.payment || 'GCash'}</strong>
+                        <strong style="text-transform: uppercase;">${paymentMethod}</strong>
+                    </div>
+                    <div class="summary-item-row" style="align-items: center; margin-top: 8px;">
+                        <span>Proof of Payment</span>
+                        <div>
+                            ${receiptImg ? `<img src="${receiptImg}" alt="Proof of Payment" class="proof-thumbnail-img" onclick="window.open('${receiptImg}', '_blank')">` : '<span style="font-size: 0.8rem; color: #94a3b8;">No Image</span>'}
+                        </div>
                     </div>
                 </div>
 

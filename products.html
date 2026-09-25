@@ -95,6 +95,7 @@
         </div>
     </main>
 
+    <!-- ITEM MODAL -->
     <div class="modal fade" id="itemModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content rounded-4 overflow-hidden border-0 shadow-lg">
@@ -117,11 +118,111 @@
                             <div class="d-grid gap-2">
                                 <button id="addToCartBtn" class="btn btn-outline-dark fw-bold py-2 rounded-pill"><i class="bi bi-cart-plus me-1"></i> Add to Cart</button>
                                 <button id="buyNowBtn" class="btn btn-success fw-bold py-2 rounded-pill"><i class="bi bi-bag-check me-1"></i> Buy Now (Checkout)</button>
-                                <a href="terms.html" target="_blank" class="btn btn-link text-decoration-none mt-1 text-center" style="font-size: 13px;">Terms of Service</a>
+                                <button type="button" class="btn btn-link text-decoration-none mt-1 text-center p-0" data-bs-toggle="modal" data-bs-target="#termsModal" style="font-size: 13px; color: #6c757d;">Terms of Service</button>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMS OF SERVICE MODAL (Eksaktong disenyo ng dating terms.html) -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content rounded-4 shadow border-0 p-3 p-md-4" style="background-color: #fafafa; font-family: 'Inter', sans-serif;">
+                
+                <div class="modal-header border-0 pb-0 justify-content-center position-relative">
+                    <h3 class="modal-title fw-bold text-uppercase text-center" style="color: #8b0000; letter-spacing: 1px;">Terms of Service</h3>
+                    <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body py-4">
+                    
+                    <!-- READ BEFORE BUYING -->
+                    <div class="section-box text-center border shadow-sm bg-white p-4 mb-4 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                        <h5 class="fw-bold mb-3" style="color: #8b0000;">READ BEFORE BUYING</h5>
+                        <p class="mb-2">Lighter colors can highlight <span style="color: #ff6600; font-weight: 600;">imperfections</span> (dust, color variations, brush marks, etc.).</p>
+                        <p class="mb-2">All items are <strong>handmade</strong> and NOT factory-produced. By ordering, you acknowledge and accept this.</p>
+                        <p class="mb-2">If you prefer flawless machine-made items, our products may not meet expectations.</p>
+                        <p class="mb-3">We are continuously improving quality and process.</p>
+                        <h6 class="text-danger fw-bold mt-3 text-uppercase" style="font-size: 0.95rem;">FIRST TO PAY BASIS</h6>
+                        <p class="mb-0 text-secondary" style="font-size: 0.9rem;">GCASH: 09952075734 (IFC)</p>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <!-- SHIPPING -->
+                        <div class="col-md-6">
+                            <div class="section-box border shadow-sm bg-white p-3 h-100 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                                <h5 class="fw-bold mb-3" style="color: #8b0000; font-size: 1.1rem;">SHIPPING</h5>
+                                <p class="mb-1"><strong>NO COD</strong></p>
+                                <p class="mb-1"><strong>Nationwide Shipping (J&T)</strong></p>
+                                <ul class="mb-2 ps-3 text-secondary" style="font-size: 0.9rem;">
+                                    <li>Luzon: ₱54</li>
+                                    <li>Visayas: ₱74</li>
+                                    <li>Mindanao: ₱79</li>
+                                </ul>
+                                <p class="mb-1"><strong>Same-Day Delivery (Lalamove)</strong></p>
+                                <p class="mb-1 text-secondary" style="font-size: 0.9rem;">Available in Taytay (advance payment required)</p>
+                                <p class="mb-0"><strong>Door-to-Door Delivery:</strong> ₱15</p>
+                            </div>
+                        </div>
+
+                        <!-- NO RUSH ORDERS -->
+                        <div class="col-md-6">
+                            <div class="section-box border shadow-sm bg-white p-3 h-100 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                                <h5 class="fw-bold mb-3" style="color: #8b0000; font-size: 1.1rem;">NO RUSH ORDERS</h5>
+                                <p class="mb-2">We do not accept rush orders. Processing may take <span style="color: #ff6600; font-weight: 600;">several days up to a week</span>.</p>
+                                <p class="mb-2">Managed by a student balancing academics and business.</p>
+                                <p class="mb-0 text-secondary" style="font-size: 0.9rem;">Responses may be delayed. Please follow up if needed.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <!-- CUSTOM ORDERS -->
+                        <div class="col-md-6">
+                            <div class="section-box border shadow-sm bg-white p-3 h-100 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                                <h5 class="fw-bold mb-3" style="color: #8b0000; font-size: 1.1rem;">CUSTOM ORDERS</h5>
+                                <p class="mb-2">Takes <span style="color: #ff6600; font-weight: 600;">2–3 days</span> normally, up to <span style="color: #ff6600; font-weight: 600;">1–2 weeks</span>.</p>
+                                <p class="mb-2"><span style="color: #ff6600; font-weight: 600;">50% deposit required</span> or full payment.</p>
+                                <p class="mb-0">Reservations valid for <span style="color: #ff6600; font-weight: 600;">48 hours</span>.</p>
+                            </div>
+                        </div>
+
+                        <!-- DON'TS -->
+                        <div class="col-md-6">
+                            <div class="section-box border shadow-sm bg-white p-3 h-100 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                                <h5 class="fw-bold mb-3" style="color: #8b0000; font-size: 1.1rem;">DON’TS</h5>
+                                <ul class="mb-0 ps-3 text-secondary" style="font-size: 0.9rem; line-height: 1.6;">
+                                    <li>No joke discounts</li>
+                                    <li>No cancellation of orders</li>
+                                    <li>No delayed payments</li>
+                                    <li>No rude behavior</li>
+                                    <li>No fake orders</li>
+                                    <li>No special treatment requests</li>
+                                    <li>No harassment</li>
+                                    <li>No refunds without valid reason</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT RULES -->
+                    <div class="section-box border shadow-sm bg-white p-3 rounded-3" style="border-left: 5px solid #8b0000 !important;">
+                        <h5 class="fw-bold mb-3" style="color: #8b0000; font-size: 1.1rem;">PAYMENT RULES</h5>
+                        <p class="mb-1"><strong>First to Pay Basis</strong></p>
+                        <p class="mb-1 text-danger fw-semibold">Cancel Fee: ₱50</p>
+                        <p class="mb-2 text-secondary" style="font-size: 0.9rem;">Violations may result in public posting for accountability.</p>
+                        <p class="text-danger fw-bold mb-0" style="font-size: 0.9rem;">NO EXTENSIONS on payment deadlines.</p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-dark rounded-pill px-5 fw-bold" data-bs-dismiss="modal">Close</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -178,7 +279,7 @@
                         </div>
                     </div>
 
-                    <!-- PERSONAL INFORMATION (Naka-display na lang at hindi na textfields) -->
+                    <!-- PERSONAL INFORMATION -->
                     <div class="summary-section-box mb-3 p-3 bg-light border rounded-3">
                         <div class="summary-section-title fw-bold mb-2" style="font-size: 0.9rem; color: #111;">
                             <i class="fas fa-user-circle me-1"></i> Personal Information
@@ -522,7 +623,7 @@
                     }
 
                     localStorage.setItem('ifc_user_cart', JSON.stringify(cart));
-                    showCustomAlert('Product successfully added to your Cart with 12% VAT!', () => {
+                    showCustomAlert('Product successfully added to your Cart!', () => {
                         window.location.href = 'user/userCart.html'; 
                     });
                 });
@@ -555,7 +656,6 @@
                     document.getElementById('checkoutItemVat').textContent = '₱' + vatAmount.toFixed(2);
                     document.getElementById('checkoutItemTotal').textContent = '₱' + totalAmount.toFixed(2);
 
-                    // Kunin ang info ng naka-login na user para ilagay sa Display Personal Info
                     const currentUser = JSON.parse(localStorage.getItem('ifc_logged_in_user')) || {
                         name: "Juan Dela Cruz",
                         contact: "09123456789",
