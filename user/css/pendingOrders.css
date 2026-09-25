@@ -176,7 +176,7 @@
 }
 
 /* =========================================
-   DASHBOARD LAYOUT & SIDEBAR (Synced)
+   DASHBOARD LAYOUT & SIDEBAR (Synced from userOrder)
    ========================================= */
 .dashboard-wrapper {
     display: flex;
@@ -497,4 +497,11 @@
         border-top: 1px solid #e2e8f0;
         padding-top: 8px;
     }
+}
+
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }

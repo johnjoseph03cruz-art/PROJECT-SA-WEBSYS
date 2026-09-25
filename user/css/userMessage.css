@@ -27,6 +27,7 @@ body {
     margin-top: 80px;
 }
 
+/* Eksaktong Sidebar Styling gaya ng sa userOrder */
 .dashboard-sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -41,6 +42,12 @@ body {
     top: 100px;
     height: calc(100vh - 120px);
     box-sizing: border-box;
+}
+
+.sidebar-menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
 }
 
 .sidebar-item {
@@ -61,6 +68,28 @@ body {
     font-size: 1.1rem;
     width: 20px;
     text-align: center;
+}
+
+.sidebar-item:hover {
+    background-color: #f1f5f9;
+    color: #000000;
+}
+
+.sidebar-item.active {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.sidebar-item.logout-btn {
+    color: #dc3545; 
+    background-color: #fff5f5;
+    font-weight: 600;
+}
+
+.sidebar-item.logout-btn:hover {
+    background-color: #fee2e2;
+    color: #b91c1c;
 }
 
 .dashboard-content-area {
@@ -274,4 +303,22 @@ body {
 
 .attachment-option:not(:last-child) {
     border-bottom: 1px solid #e2e8f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+    .dashboard-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 15px;
+        position: static;
+        height: auto;
+    }
+    .sidebar-menu-group {
+        flex-direction: row;
+    }
 }

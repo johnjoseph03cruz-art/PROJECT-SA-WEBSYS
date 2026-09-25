@@ -36,18 +36,13 @@
             </nav>
 
             <div class="nav-right-actions">
-                <!-- Notification Bell Icon -->
                 <button type="button" class="nav-icon-btn notification-bell-btn" id="notifModalBtn" title="Notifications">
                     <i class="fas fa-bell"></i>
                     <span class="notif-badge" id="navNotifBadge" style="display: none;">0</span>
                 </button>
-
-                <!-- Cart Icon -->
                 <a href="userCart.html" class="nav-icon-btn" title="Shopping Cart">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
-
-                <!-- Profile Icon -->
                 <a href="profile.html" class="profile-icon-only active" title="User Profile">
                     <i class="fas fa-user"></i>
                 </a>
@@ -92,13 +87,10 @@
                     <i class="fas fa-home"></i> Dashboard
                 </a>
                 <a href="userOrder.html" class="sidebar-item">
-                    <i class="fas fa-clipboard-list"></i> Orders
+                    <i class="fas fa-clipboard-list"></i> Orders & Transactions
                 </a>
                 <a href="pendingOrders.html" class="sidebar-item">
                     <i class="fas fa-clock"></i> Pending Orders
-                </a>
-                <a href="userTransactions.html" class="sidebar-item">
-                    <i class="fas fa-file-invoice-dollar"></i> Transactions
                 </a>
                 <a href="userMessage.html" class="sidebar-item">
                     <i class="fas fa-comments"></i> Messages
@@ -109,7 +101,7 @@
             </div>
             
             <div style="padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.08);">
-                <a href="#" onclick="logoutUser(event)" class="sidebar-item logout-btn" style="color: #dc3545; background-color: #fff5f5;">
+                <a href="#" id="logoutBtn" class="sidebar-item logout-btn" style="color: #dc3545; background-color: #fff5f5;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -124,9 +116,9 @@
                 <p>Welcome back! Here's a quick look at your activity</p>
             </div>
 
-            <!-- 3 Stat Cards Grid -->
+            <!-- Stat Cards Grid -->
             <div class="stats-grid-3">
-                <div class="stat-card clickable-card" onclick="window.location.href='userTransactions.html'">
+                <div class="stat-card clickable-card" onclick="window.location.href='userOrder.html'">
                     <div class="stat-header">
                         <div class="stat-icon-circle"><i class="fas fa-shopping-bag"></i></div>
                         My Orders
@@ -134,6 +126,17 @@
                     <div>
                         <div class="stat-value" id="totalOrdersCount">0</div>
                         <div class="stat-label">Total Order</div>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable-card" onclick="window.location.href='userOrder.html?status=process'">
+                    <div class="stat-header">
+                        <div class="stat-icon-circle"><i class="fas fa-spinner"></i></div>
+                        Processing
+                    </div>
+                    <div>
+                        <div class="stat-value" id="processingOrdersCount">0</div>
+                        <div class="stat-label">In Progress</div>
                     </div>
                 </div>
 
@@ -145,17 +148,6 @@
                     <div>
                         <div class="stat-value" id="pendingOrdersCount">0</div>
                         <div class="stat-label">Pending</div>
-                    </div>
-                </div>
-
-                <div class="stat-card clickable-card" onclick="window.location.href='userOrder.html'">
-                    <div class="stat-header">
-                        <div class="stat-icon-circle"><i class="fas fa-spinner"></i></div>
-                        Processing Orders
-                    </div>
-                    <div>
-                        <div class="stat-value" id="processingOrdersCount">0</div>
-                        <div class="stat-label">Processing</div>
                     </div>
                 </div>
             </div>
@@ -184,17 +176,16 @@
             });
         });
 
-        function logoutUser(e) {
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('ifc_user_firstname');
             window.location.href = '../index.html';
-        }
+        });
 
         const notifBtn = document.getElementById('notifModalBtn');
         const notifOverlay = document.getElementById('notifModalOverlay');
         const closeNotifBtn = document.getElementById('closeNotifModal');
-
         const detailOverlay = document.getElementById('detailNotifModalOverlay');
         const closeDetailBtn = document.getElementById('closeDetailModal');
 
@@ -231,26 +222,34 @@
 
         function loadDashboardData() {
             const orders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
+            const transactions = JSON.parse(localStorage.getItem('ifc_user_transactions')) || [];
+            const combinedOrders = [...orders, ...transactions];
             const notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
 
-            document.getElementById('totalOrdersCount').textContent = orders.length;
+            document.getElementById('totalOrdersCount').textContent = combinedOrders.length;
 
-            const pendingCount = orders.filter(o => o.status === 'pending').length;
-            document.getElementById('pendingOrdersCount').textContent = pendingCount;
-
-            const processingCount = orders.filter(o => o.status === 'processing' || o.status === 'shipping').length;
+            const processingCount = combinedOrders.filter(o => {
+                const s = (o.status || '').toLowerCase();
+                return s === 'process' || s === 'processing';
+            }).length;
             document.getElementById('processingOrdersCount').textContent = processingCount;
+
+            const pendingCount = combinedOrders.filter(o => {
+                const s = (o.status || '').toLowerCase();
+                return s === 'pending';
+            }).length;
+            document.getElementById('pendingOrdersCount').textContent = pendingCount;
 
             updateNotificationBadge(notifications);
 
             const recentContainer = document.getElementById('recentOrdersList');
-            if (orders.length === 0) {
+            if (combinedOrders.length === 0) {
                 recentContainer.innerHTML = `<div class="empty-orders-message">No recent orders found.</div>`;
                 return;
             }
 
             recentContainer.innerHTML = '';
-            const recentOrders = orders.slice(0, 3);
+            const recentOrders = combinedOrders.slice(0, 3);
 
             recentOrders.forEach(order => {
                 const itemDiv = document.createElement('div');
@@ -272,7 +271,7 @@
                         <div class="tx-card-meta">
                             <div class="total-price-group">
                                 <span class="total-label">Total:</span>
-                                <span class="total-amount">${order.price}</span>
+                                <span class="total-amount">${order.price || order.total}</span>
                             </div>
                             <div class="tx-action-group">
                                 <span class="status-badge ${order.status === 'completed' ? 'completed' : 'in-progress'}">${order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Processing'}</span>
@@ -302,7 +301,6 @@
                 div.style.justifyContent = 'space-between';
                 div.style.alignItems = 'center';
 
-                // Ligtas na pag-assign ng mga teksto para maiwasan ang "undefined"
                 const notifTitle = notif.title || notif.product || notif.name || 'Notification Update';
                 const notifDesc = notif.message || notif.desc || 'You have a new update regarding your order.';
                 const notifTime = notif.time || notif.date || 'Just now';
@@ -318,7 +316,6 @@
                     </button>
                 `;
                 
-                // Kapag clinick ang mismong content, buksan ang details at mark as read
                 div.querySelector('.notif-content-area').addEventListener('click', () => {
                     document.getElementById('detailNotifTitle').textContent = notifTitle;
                     document.getElementById('detailNotifMessage').textContent = notifDesc;
@@ -335,9 +332,8 @@
                     }
                 });
 
-                // Function para mabura ang notification kapag clinick ang delete button
                 div.querySelector('.btn-delete-notif').addEventListener('click', (e) => {
-                    e.stopPropagation(); // Pigilan na mag-trigger ang click ng parent
+                    e.stopPropagation();
                     deleteSingleNotification(index);
                 });
 
@@ -345,7 +341,6 @@
             });
         }
 
-        // Function para tanggalin ang partikular na notification sa localStorage
         function deleteSingleNotification(index) {
             let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
             notifications.splice(index, 1);

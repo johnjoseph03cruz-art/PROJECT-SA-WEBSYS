@@ -126,12 +126,12 @@
         </div>
     </div>
 
-    <!-- REVISED CHECKOUT MODAL NA GINAYA SA userCart.html -->
+    <!-- REVISED CHECKOUT MODAL -->
     <div class="modal fade" id="checkoutModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
             <div class="modal-content rounded-4 shadow border-0 p-4" style="border: 2px solid #111 !important; border-radius: 20px !important;">
                 <div class="modal-header border-bottom pb-2 mb-3" style="border-color: #111 !important;">
-                    <h5 class="modal-title fw-bold" style="font-size: 1.3rem;">Order Summary</h5>
+                    <h5 class="modal-title fw-bold" style="font-size: 1.3rem;">Order Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
@@ -163,13 +163,14 @@
                         </div>
                     </div>
 
+                    <!-- DELIVERY INFORMATION -->
                     <div class="summary-section-box mb-3 p-3 bg-light border rounded-3">
                         <div class="summary-section-title fw-bold mb-2" style="font-size: 0.9rem; color: #111;">
                             <i class="fas fa-truck me-1"></i> Delivery Information
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.85rem; color: #444;">
-                            <span>Delivery Method</span>
-                            <span>Meet-up</span>
+                            <span>Method</span>
+                            <span class="fw-semibold">Delivery</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center" style="font-size: 0.85rem; color: #444;">
                             <span>Location</span>
@@ -177,6 +178,26 @@
                         </div>
                     </div>
 
+                    <!-- PERSONAL INFORMATION (Naka-display na lang at hindi na textfields) -->
+                    <div class="summary-section-box mb-3 p-3 bg-light border rounded-3">
+                        <div class="summary-section-title fw-bold mb-2" style="font-size: 0.9rem; color: #111;">
+                            <i class="fas fa-user-circle me-1"></i> Personal Information
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.85rem; color: #444;">
+                            <span>Name</span>
+                            <span id="displayUserName" class="fw-semibold">Juan Dela Cruz</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.85rem; color: #444;">
+                            <span>Contact Number</span>
+                            <span id="displayUserContact" class="fw-semibold">09123456789</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center" style="font-size: 0.85rem; color: #444;">
+                            <span>Address</span>
+                            <span id="displayUserAddress" class="text-end" style="max-width: 200px;">Blk 1 Lot 2, Taytay, Rizal</span>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT INFORMATION + GCASH QR CODE HOLDER -->
                     <div class="summary-section-box mb-3 p-3 bg-light border rounded-3">
                         <div class="summary-section-title fw-bold mb-2" style="font-size: 0.9rem; color: #111;">
                             <i class="fas fa-credit-card me-1"></i> Payment Information
@@ -188,6 +209,14 @@
                         <div style="font-size: 0.8rem; color: #555; background: #fff; padding: 6px; border-radius: 6px; margin: 6px 0; border: 1px dashed #ccc;">
                             Send payment via GCash to: <strong>0912-345-6789 (IFC Crafts)</strong>
                         </div>
+
+                        <!-- GCASH QR CODE HOLDER -->
+                        <div class="gcash-qr-holder text-center my-3 p-2 bg-white border rounded-3">
+                            <p class="mb-1 text-dark fw-bold" style="font-size: 0.78rem;">Scan GCash QR Code to Pay</p>
+                            <img src="pics/gcash-qr.jpg" alt="IFC Crafts GCash QR Code" class="img-fluid rounded border" style="max-width: 130px; height: auto;" id="gcashQrImage">
+                            <div class="text-muted mt-1" style="font-size: 0.7rem;">IFC Crafts Official QR</div>
+                        </div>
+
                         <div class="d-flex justify-content-between align-items-center mt-2" style="font-size: 0.85rem; color: #444;">
                             <span>Proof of Payment</span>
                             <div class="d-flex align-items-center gap-2">
@@ -526,6 +555,17 @@
                     document.getElementById('checkoutItemVat').textContent = '₱' + vatAmount.toFixed(2);
                     document.getElementById('checkoutItemTotal').textContent = '₱' + totalAmount.toFixed(2);
 
+                    // Kunin ang info ng naka-login na user para ilagay sa Display Personal Info
+                    const currentUser = JSON.parse(localStorage.getItem('ifc_logged_in_user')) || {
+                        name: "Juan Dela Cruz",
+                        contact: "09123456789",
+                        address: "Taytay, Rizal"
+                    };
+
+                    document.getElementById('displayUserName').textContent = currentUser.name;
+                    document.getElementById('displayUserContact').textContent = currentUser.contact;
+                    document.getElementById('displayUserAddress').textContent = currentUser.address;
+
                     const itemModalEl = document.getElementById('itemModal');
                     const itemModal = bootstrap.Modal.getInstance(itemModalEl);
                     if (itemModal) itemModal.hide();
@@ -541,6 +581,10 @@
             const confirmOrderBtn = document.getElementById('confirmOrderBtn');
             if (confirmOrderBtn) {
                 confirmOrderBtn.addEventListener('click', () => {
+                    const fullName = document.getElementById('displayUserName').textContent;
+                    const contactNum = document.getElementById('displayUserContact').textContent;
+                    const address = document.getElementById('displayUserAddress').textContent;
+
                     const receiptInput = document.getElementById('gcashReceipt');
                     if (!receiptInput.files || receiptInput.files.length === 0) {
                         showCustomAlert('Please upload your GCash payment screenshot or receipt first before confirming.');
@@ -572,7 +616,9 @@
                             date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
                             year: String(new Date().getFullYear()),
                             status: 'processing',
-                            shipping: 'Taytay, Rizal',
+                            shipping: address,
+                            customerName: fullName,
+                            contactNumber: contactNum,
                             payment: 'GCash',
                             receiptImage: receiptBase64
                         };

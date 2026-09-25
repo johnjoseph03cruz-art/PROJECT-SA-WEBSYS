@@ -196,7 +196,7 @@
     gap: 6px;
 }
 
-/* Status Badges Colors: Complete = Green, Processing = Brown, Rejected = Red */
+/* Status Badges Colors: Complete = Green, Verified = Green, Processing = Brown, Cancelled = Red */
 .status-badge {
     padding: 5px 14px;
     border-radius: 20px;
@@ -211,13 +211,18 @@
     color: #ffffff;
 }
 
+.status-badge.verified {
+    background-color: #2e7d32; /* Green para sa payment at na-verify na custom design */
+    color: #ffffff;
+}
+
 .status-badge.processing {
     background-color: #8D5B4C; /* Brown */
     color: #ffffff;
 }
 
-.status-badge.rejected {
-    background-color: #d32f2f; /* Red */
+.status-badge.cancelled {
+    background-color: #d32f2f; /* Red para sa cancelled */
     color: #ffffff;
 }
 

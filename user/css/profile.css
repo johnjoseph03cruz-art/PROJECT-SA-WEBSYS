@@ -33,6 +33,12 @@ html, body {
     box-sizing: border-box;
 }
 
+.sidebar-menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
 .sidebar-item {
     display: flex;
     align-items: center;
@@ -61,12 +67,14 @@ html, body {
 .sidebar-item.active {
     background-color: #000000;
     color: #ffffff;
+    font-weight: 700;
 }
 
 /* Logout Button Design */
 .sidebar-item.logout-btn {
     color: #dc3545; 
     background-color: #fff5f5;
+    font-weight: 600;
 }
 
 .sidebar-item.logout-btn:hover {
@@ -254,28 +262,6 @@ html, body {
     padding: 20px 25px;
 }
 
-/* Compatibility classes para hindi masira ang lumang elements */
-.section-toggle-header {
-    padding: 18px 25px;
-    background: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.section-toggle-header h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #000000;
-    margin: 0;
-}
-
-.section-collapsible-content {
-    padding: 20px 25px;
-}
-
 .info-grid {
     display: flex;
     flex-direction: column;
@@ -300,33 +286,6 @@ html, body {
     font-size: 0.95rem;
     font-weight: 600;
     color: #000000;
-}
-
-/* Action Buttons */
-.section-action-bar {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.action-btn-black {
-    background: #000000;
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.action-btn-black:hover {
-    background: #333333;
-}
-
-.logout-action-btn {
-    background: #000000;
 }
 
 /* Modal Popup Styles */
@@ -445,4 +404,22 @@ html, body {
 
 .btn-save:hover {
     background: #333333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+    .dashboard-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 15px;
+        position: static;
+        height: auto;
+    }
+    .sidebar-menu-group {
+        flex-direction: row;
+    }
 }

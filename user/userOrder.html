@@ -78,6 +78,17 @@
         </div>
     </div>
 
+    <!-- Order Receipt Modal -->
+    <div class="notif-modal-overlay" id="orderReceiptModalOverlay" style="z-index: 1300;">
+        <div class="notif-modal-content" style="max-width: 480px;">
+            <div class="notif-modal-header">
+                <h3>Order Summary</h3>
+                <button type="button" class="close-notif-modal" id="closeReceiptModal">&times;</button>
+            </div>
+            <div class="notif-modal-body" id="receiptModalBody" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+    </div>
+
     <!-- Dashboard Container -->
     <div class="dashboard-wrapper">
         
@@ -87,13 +98,10 @@
                     <i class="fas fa-home"></i> Dashboard
                 </a>
                 <a href="userOrder.html" class="sidebar-item active">
-                    <i class="fas fa-clipboard-list"></i> Orders
+                    <i class="fas fa-clipboard-list"></i> Orders & Transactions
                 </a>
                 <a href="pendingOrders.html" class="sidebar-item">
                     <i class="fas fa-clock"></i> Pending Orders
-                </a>
-                <a href="userTransactions.html" class="sidebar-item">
-                    <i class="fas fa-file-invoice-dollar"></i> Transactions
                 </a>
                 <a href="userMessage.html" class="sidebar-item">
                     <i class="fas fa-comments"></i> Messages
@@ -113,12 +121,62 @@
         <main class="dashboard-main-content">
             <div class="transaction-container-box">
                 <div class="transaction-main-header">
-                    <h1>My Orders</h1>
-                    <p>Track your ongoing processing orders.</p>
+                    <h1>My Orders & Transactions</h1>
+                    <p>Track your processing orders and view your transaction history.</p>
                 </div>
-                <div class="transactions-list" id="ordersListContainer">
-                    <!-- Dynamic Orders injected via JS -->
+
+                <!-- Transaction Toolbar -->
+                <div class="transaction-toolbar" style="justify-content: flex-start;">
+                    <div class="search-bar-wrapper" style="max-width: 100%; flex: 1;">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="transactionSearch" placeholder="Search Orders & Transactions..." class="search-input">
+                    </div>
                 </div>
+
+                <!-- Dropdown Filters Bar -->
+                <div class="transaction-filters-bar" style="padding: 12px 30px; border-bottom: 1px solid #e2e8f0; background: #ffffff; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; flex-shrink: 0;">
+                    <div class="filter-dropdown-group">
+                        <label for="statusFilterSelect" style="font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-right: 6px;">Status:</label>
+                        <select id="statusFilterSelect" class="filter-dropdown">
+                            <option value="all">All Status</option>
+                            <option value="process">Processing</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-dropdown-group">
+                        <label for="monthFilterSelect" style="font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-right: 6px;">Month:</label>
+                        <select id="monthFilterSelect" class="filter-dropdown">
+                            <option value="all">All Months</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-dropdown-group">
+                        <label for="yearFilterSelect" style="font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-right: 6px;">Year:</label>
+                        <select id="yearFilterSelect" class="filter-dropdown">
+                            <option value="all">All Years</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="transactions-list" id="ordersListContainer"></div>
             </div>
         </main>
     </div>
@@ -130,9 +188,7 @@
                 <h2 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Order Summary</h2>
                 <button id="closeModalBtn" class="close-modal" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">&times;</button>
             </div>
-            <div class="modal-body" id="modalBodyContent" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- Uniform summary details -->
-            </div>
+            <div class="modal-body" id="modalBodyContent" style="display: flex; flex-direction: column; gap: 12px;"></div>
             <div class="modal-footer" style="padding-top: 10px; border-top: 1px solid #e2e8f0; text-align: right;">
                 <button id="closeModalActionBtn" class="modal-btn-close" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Close</button>
             </div>
@@ -151,13 +207,18 @@
         const closeNotifBtn = document.getElementById('closeNotifModal');
         const detailOverlay = document.getElementById('detailNotifModalOverlay');
         const closeDetailBtn = document.getElementById('closeDetailModal');
+        const receiptOverlay = document.getElementById('orderReceiptModalOverlay');
+        const closeReceiptBtn = document.getElementById('closeReceiptModal');
 
         if (notifBtn) notifBtn.addEventListener('click', () => { notifOverlay.style.display = 'flex'; loadModalNotifications(); });
         if (closeNotifBtn) closeNotifBtn.addEventListener('click', () => { notifOverlay.style.display = 'none'; });
         if (closeDetailBtn) closeDetailBtn.addEventListener('click', () => { detailOverlay.style.display = 'none'; });
+        if (closeReceiptBtn) closeReceiptBtn.addEventListener('click', () => { receiptOverlay.style.display = 'none'; });
+
         window.addEventListener('click', (e) => {
             if (e.target === notifOverlay) notifOverlay.style.display = 'none';
             if (e.target === detailOverlay) detailOverlay.style.display = 'none';
+            if (e.target === receiptOverlay) receiptOverlay.style.display = 'none';
         });
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -168,7 +229,17 @@
                 window.location.href = '../index.html';
             });
 
-            loadAndRenderProcessingOrders();
+            // Suriin kung may URL parameter na status=process
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusParam = urlParams.get('status');
+            if (statusParam) {
+                const statusSelect = document.getElementById('statusFilterSelect');
+                if (statusSelect) {
+                    statusSelect.value = statusParam;
+                }
+            }
+
+            loadAndRenderCombinedOrdersAndTransactions();
             const notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
             updateNotificationBadge(notifications);
         });
@@ -176,63 +247,64 @@
         function getStatusBadgeClass(status) {
             if (!status) return 'process';
             const s = status.toLowerCase();
-            if (s === 'complete' || s === 'completed') return 'complete';
+            if (s === 'complete' || s === 'completed') return 'completed';
+            if (s === 'verified') return 'verified';
             if (s === 'pending') return 'pending';
-            if (s === 'rejected') return 'rejected';
+            if (s === 'rejected' || s === 'cancelled') return 'rejected';
             if (s === 'process' || s === 'processing' || s === 'shipping') return 'process';
             return 'process';
         }
 
-        function loadAndRenderProcessingOrders() {
+        function loadAndRenderCombinedOrdersAndTransactions() {
             const container = document.getElementById('ordersListContainer');
             const storedOrders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
+            const storedTransactions = JSON.parse(localStorage.getItem('ifc_user_transactions')) || [];
 
-            const processingOrders = storedOrders.filter(o => {
-                const s = (o.status || '').toLowerCase();
-                return s === 'processing' || s === 'process' || s === 'shipping';
-            });
+            const combinedList = [...storedOrders, ...storedTransactions];
 
             container.innerHTML = '';
-            if (processingOrders.length === 0) {
-                container.innerHTML = `<div style="padding: 30px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif;">No processing orders found.</div>`;
+            if (combinedList.length === 0) {
+                container.innerHTML = `<div style="padding: 30px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif;">No orders or transaction history found.</div>`;
                 return;
             }
 
-            processingOrders.forEach(order => {
-                const statusClass = getStatusBadgeClass(order.status);
-                const displayStatus = order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Processing';
+            combinedList.forEach(item => {
+                const status = item.status || 'processing';
+                const statusClass = getStatusBadgeClass(status);
+                const displayStatus = status.charAt(0).toUpperCase() + status.slice(1);
+                const itemDate = item.date || '';
 
                 const card = document.createElement('div');
                 card.className = 'transaction-card-item';
-                card.setAttribute('data-status', order.status || 'processing');
-                card.setAttribute('data-id', order.id);
-                card.setAttribute('data-product', order.product || order.name);
-                card.setAttribute('data-craft', order.craft || 'Handmade Craft');
-                card.setAttribute('data-qty', order.qty || order.quantity || 1);
-                card.setAttribute('data-price', order.price || order.total);
-                card.setAttribute('data-date', order.date);
-                card.setAttribute('data-shipping', order.shipping || 'Taytay, Rizal');
-                card.setAttribute('data-payment', order.payment || 'GCash');
-                card.setAttribute('data-image', order.image || '../pictures/necklace.jpg');
+                card.setAttribute('data-status', statusClass);
+                card.setAttribute('data-date', itemDate);
+                card.setAttribute('data-id', item.id);
+                card.setAttribute('data-product', item.product || item.name);
+                card.setAttribute('data-craft', item.craft || 'Handmade Craft');
+                card.setAttribute('data-qty', item.qty || item.quantity || 1);
+                card.setAttribute('data-price', item.price || item.total);
+                card.setAttribute('data-shipping', item.shipping || 'Taytay, Rizal');
+                card.setAttribute('data-payment', item.payment || 'GCash');
+                card.setAttribute('data-image', item.image || '../pictures/necklace.jpg');
 
                 card.innerHTML = `
                     <div class="tx-card-header">
-                        <span class="order-id-label">Order# ${order.id}</span>
-                        <span class="tx-date">${order.date}</span>
+                        <span class="order-id-label">Order# ${item.id}</span>
+                        <span class="tx-date">${item.date}</span>
                     </div>
                     <div class="tx-card-body">
                         <div class="product-preview">
-                            <img src="${order.image || '../pictures/necklace.jpg'}" alt="${order.product || order.name}" class="tx-product-img" onerror="this.src='../pictures/necklace.jpg'">
+                            <img src="${item.image || '../pictures/necklace.jpg'}" alt="${item.product || item.name}" class="tx-product-img" onerror="this.src='../pictures/necklace.jpg'">
                             <div class="tx-product-info">
-                                <h3>${order.product || order.name}</h3>
-                                <p class="craft-type">${order.craft || 'Handmade Craft'}</p>
-                                <p class="qty-text">Qty.: ${order.qty || order.quantity || 1}</p>
+                                <h3>${item.product || item.name}</h3>
+                                <p class="craft-type">${item.craft || 'Handmade Craft'}</p>
+                                <p class="qty-text">Qty.: ${item.qty || item.quantity || 1}</p>
                             </div>
                         </div>
                         <div class="tx-card-meta">
                             <div class="total-price-group">
                                 <span class="total-label">Total:</span>
-                                <span class="total-amount">${order.price || order.total}</span>
+                                <span class="total-amount">${item.price || item.total}</span>
                             </div>
                             <div class="tx-action-group">
                                 <span class="status-badge ${statusClass}">${displayStatus}</span>
@@ -244,10 +316,81 @@
                 container.appendChild(card);
             });
 
-            initModalListeners();
+            initSearchAndModalListeners();
+            initFilterListeners();
+            
+            // I-run agad ang filter pagka-load para sumunod sa default/URL parameter value
+            filterOrders();
         }
 
-        function initModalListeners() {
+        function filterOrders() {
+            const searchInput = document.getElementById('transactionSearch');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            const statusVal = document.getElementById('statusFilterSelect').value;
+            const monthVal = document.getElementById('monthFilterSelect').value;
+            const yearVal = document.getElementById('yearFilterSelect').value;
+            const transactionCards = document.querySelectorAll('.transaction-card-item');
+
+            transactionCards.forEach(card => {
+                const textContent = card.textContent.toLowerCase();
+                const cardStatus = card.getAttribute('data-status');
+                const cardDateStr = card.getAttribute('data-date');
+
+                const matchesSearch = textContent.includes(searchTerm);
+                const matchesStatus = (statusVal === 'all') || (cardStatus === statusVal);
+
+                let matchesMonth = true;
+                let matchesYear = true;
+
+                if (monthVal !== 'all' || yearVal !== 'all') {
+                    const parsedDate = new Date(cardDateStr);
+                    if (!isNaN(parsedDate)) {
+                        const cardMonth = String(parsedDate.getMonth() + 1).padStart(2, '0');
+                        const cardYear = String(parsedDate.getFullYear());
+
+                        if (monthVal !== 'all' && cardMonth !== monthVal) matchesMonth = false;
+                        if (yearVal !== 'all' && cardYear !== yearVal) matchesYear = false;
+                    } else {
+                        if (monthVal !== 'all' && !cardDateStr.toLowerCase().includes(getMonthName(monthVal).toLowerCase())) {
+                            matchesMonth = false;
+                        }
+                        if (yearVal !== 'all' && !cardDateStr.includes(yearVal)) {
+                            matchesYear = false;
+                        }
+                    }
+                }
+
+                if (matchesSearch && matchesStatus && matchesMonth && matchesYear) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function getMonthName(monthNum) {
+            const months = {
+                '01': 'January', '02': 'February', '03': 'March', '04': 'April',
+                '05': 'May', '06': 'June', '07': 'July', '08': 'August',
+                '09': 'September', '10': 'October', '11': 'November', '12': 'December'
+            };
+            return months[monthNum] || '';
+        }
+
+        function initFilterListeners() {
+            document.getElementById('statusFilterSelect').addEventListener('change', filterOrders);
+            document.getElementById('monthFilterSelect').addEventListener('change', filterOrders);
+            document.getElementById('yearFilterSelect').addEventListener('change', filterOrders);
+        }
+
+        function initSearchAndModalListeners() {
+            const searchInput = document.getElementById('transactionSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    filterOrders();
+                });
+            }
+
             const modal = document.getElementById('orderModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const closeModalActionBtn = document.getElementById('closeModalActionBtn');
@@ -266,10 +409,9 @@
                     const date = card.getAttribute('data-date');
                     const shipping = card.getAttribute('data-shipping');
                     const payment = card.getAttribute('data-payment');
-                    const status = card.getAttribute('data-status');
+                    const statusClass = card.getAttribute('data-status');
                     const image = card.getAttribute('data-image');
-                    const statusClass = getStatusBadgeClass(status);
-                    const displayStatus = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Processing';
+                    const displayStatus = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
 
                     const rawPriceStr = price ? price.replace(/[^\d.]/g, '') : '0';
                     const totalPrice = parseFloat(rawPriceStr) || 0;

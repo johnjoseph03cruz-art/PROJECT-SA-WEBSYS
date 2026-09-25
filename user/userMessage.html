@@ -86,20 +86,17 @@
     <!-- Dashboard Container -->
     <div class="dashboard-wrapper">
         
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar Navigation (Sync with userOrder) -->
         <aside class="dashboard-sidebar">
             <div class="sidebar-menu-group">
                 <a href="userDashboard.html" class="sidebar-item">
                     <i class="fas fa-home"></i> Dashboard
                 </a>
                 <a href="userOrder.html" class="sidebar-item">
-                    <i class="fas fa-clipboard-list"></i> Orders
+                    <i class="fas fa-clipboard-list"></i> Orders & Transactions
                 </a>
                 <a href="pendingOrders.html" class="sidebar-item">
                     <i class="fas fa-clock"></i> Pending Orders
-                </a>
-                <a href="userTransactions.html" class="sidebar-item">
-                    <i class="fas fa-file-invoice-dollar"></i> Transactions
                 </a>
                 <a href="userMessage.html" class="sidebar-item active">
                     <i class="fas fa-comments"></i> Messages
@@ -174,7 +171,6 @@
             });
         });
 
-        // Modals Elements Logic para sa Notifications
         const notifBtn = document.getElementById('notifModalBtn');
         const notifOverlay = document.getElementById('notifModalOverlay');
         const closeNotifBtn = document.getElementById('closeNotifModal');
