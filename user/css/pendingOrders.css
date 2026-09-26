@@ -1,68 +1,67 @@
 /* =========================================
-   NAVBAR RIGHT ACTIONS & ICONS
+   NAVBAR RIGHT ACTIONS & MAS MALALAKING ICONS
    ========================================= */
 .nav-right-actions {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 8px;
+    margin-left: 20px;
 }
 
 .nav-icon-btn {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background-color: transparent;
     color: #ffffff;
-    border: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 1.25rem;
-    cursor: pointer;
+    font-size: 1.1rem;
     position: relative;
+    border: none;
+    cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .nav-icon-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     background-color: rgba(255, 255, 255, 0.1);
 }
 
 .notif-badge {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #dc3545;
+    top: 3px;
+    right: 3px;
+    background-color: #ef4444;
     color: #ffffff;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
     font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 10px;
+    line-height: 1;
 }
 
 .profile-icon-only {
-    width: 45px;
-    height: 45px;
-    background-color: transparent;
-    color: #ffffff;
-    border-radius: 50%;
+    font-size: 1rem;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
     text-decoration: none;
+    color: #ffffff;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .profile-icon-only:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     opacity: 0.85;
 }
 
 /* =========================================
-   NOTIFICATION & RECEIPT MODAL POP-UP STYLES (Synced size with userOrder)
+   NOTIFICATION & RECEIPT MODAL POP-UP STYLES
    ========================================= */
 .notif-modal-overlay {
     display: none;
@@ -81,12 +80,12 @@
 .notif-modal-content {
     background: #ffffff;
     width: 100%;
-    max-width: 520px; /* Pinalawak para maging kapareho ng userOrder modal */
+    max-width: 520px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     animation: modalFadeIn 0.2s ease;
-    max-height: 85vh; /* Uniform max-height para sa magandang scrolling */
+    max-height: 85vh;
     display: flex;
     flex-direction: column;
 }
@@ -180,7 +179,7 @@
 }
 
 /* =========================================
-   DASHBOARD LAYOUT & SIDEBAR (Synced from userOrder)
+   DASHBOARD LAYOUT & SIDEBAR
    ========================================= */
 .dashboard-wrapper {
     display: flex;
@@ -203,6 +202,17 @@
     top: 100px;
     height: calc(100vh - 120px);
     box-sizing: border-box;
+}
+
+.mobile-sidebar-dropdown {
+    display: none;
+}
+
+.desktop-sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .sidebar-menu-group {
@@ -472,7 +482,6 @@
     font-size: 0.95rem;
 }
 
-/* Estilo para ang mga box sa loob ng resibo modal */
 .summary-section-box {
     background: #f8fafc;
     padding: 12px 14px;
@@ -515,26 +524,165 @@
     transform: scale(1.05);
 }
 
-/* Responsive adjustments */
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE VIEW
+   ========================================= */
+@media (max-width: 1150px) {
+    .hamburger { 
+        display: flex; 
+        order: 3;
+    }
+    
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-area {
+        order: 1;
+    }
+
+    .nav-right-actions {
+        display: flex;
+        align-items: center;
+        order: 2;
+        margin-left: auto;
+        margin-right: 15px;
+        gap: 6px;
+    }
+
+    .nav-icon-btn, .profile-icon-only {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 0;
+        border-bottom: 1px solid #111827;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .nav-links a { 
+        margin: 10px 0; 
+        font-size: 1.05rem; 
+        color: #94a3b8;
+    }
+    .nav-links a:hover { color: #ffffff; }
+    .nav-links a.active { border-bottom: none; color: #ffffff; font-weight: 800; }
+    
+    .menu-toggle:checked ~ .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
 @media (max-width: 900px) {
+    html, body {
+        overflow: auto;
+        height: auto;
+    }
+
     .dashboard-wrapper {
         flex-direction: column;
+        margin-top: 80px;
+        min-height: auto;
     }
+
+    .desktop-sidebar-content {
+        display: none;
+    }
+
     .dashboard-sidebar {
         width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
+        background-color: #ffffff;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
         padding: 15px;
         position: static;
         height: auto;
+        gap: 0;
+        box-sizing: border-box;
     }
-    .sidebar-menu-group {
-        flex-direction: row;
+
+    .mobile-sidebar-dropdown {
+        display: block;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 15px;
     }
+
+    .sidebar-dropdown-toggle {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #000000;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        outline: none;
+    }
+
+    .mobile-sidebar-dropdown[open] .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-dropdown-content {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .mobile-dropdown-content .sidebar-item {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        margin-top: 0;
+        color: #475569;
+    }
+
+    .mobile-dropdown-content .sidebar-item.active {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    .dashboard-main-content {
+        padding: 20px 15px;
+        max-width: 100%;
+    }
+
     .tx-card-body {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .tx-card-meta {
         align-items: flex-start;
         width: 100%;
@@ -546,9 +694,11 @@
     }
 }
 
-html, body {
-    overflow: hidden;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+@media (min-width: 901px) {
+    html, body {
+        overflow: hidden;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 }

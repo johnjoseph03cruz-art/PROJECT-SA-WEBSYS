@@ -63,6 +63,11 @@
                 <h3>Notifications</h3>
                 <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
             </div>
+            <!-- Notification Filter Tabs (All / Unread) -->
+            <div class="notif-tabs-container">
+                <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
+                <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
+            </div>
             <div class="notif-modal-body" id="notifModalList">
                 <div class="empty-notif-message">No notifications found.</div>
             </div>
@@ -86,30 +91,66 @@
     <!-- Dashboard Container -->
     <div class="dashboard-wrapper">
         
-        <!-- Sidebar Navigation (Sync with userOrder) -->
+        <!-- Sidebar Navigation -->
         <aside class="dashboard-sidebar">
-            <div class="sidebar-menu-group">
-                <a href="userDashboard.html" class="sidebar-item">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-                <a href="userOrder.html" class="sidebar-item">
-                    <i class="fas fa-clipboard-list"></i> Orders & Transactions
-                </a>
-                <a href="pendingOrders.html" class="sidebar-item">
-                    <i class="fas fa-clock"></i> Pending Orders
-                </a>
-                <a href="userMessage.html" class="sidebar-item active">
-                    <i class="fas fa-comments"></i> Messages
-                </a>
-                <a href="profile.html" class="sidebar-item">
-                    <i class="fas fa-user-circle"></i> Profile
-                </a>
-            </div>
-            
-            <div style="padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.08);">
-                <a href="#" id="logoutBtn" class="sidebar-item logout-btn" style="color: #dc3545; background-color: #fff5f5;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+            <!-- Mobile View Dropdown Accordion Wrapper -->
+            <details class="mobile-sidebar-dropdown">
+                <summary class="sidebar-dropdown-toggle">
+                    <span><i class="fas fa-bars"></i> Menu</span>
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </summary>
+                <div class="mobile-dropdown-content">
+                    <div class="sidebar-menu-group">
+                        <a href="userDashboard.html" class="sidebar-item">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <a href="userOrder.html" class="sidebar-item">
+                            <i class="fas fa-clipboard-list"></i> Orders & Transactions
+                        </a>
+                        <a href="pendingOrders.html" class="sidebar-item">
+                            <i class="fas fa-clock"></i> Pending Orders
+                        </a>
+                        <a href="userMessage.html" class="sidebar-item active">
+                            <i class="fas fa-comments"></i> Messages
+                        </a>
+                        <a href="profile.html" class="sidebar-item">
+                            <i class="fas fa-user-circle"></i> Profile
+                        </a>
+                    </div>
+                    
+                    <div style="padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 8px;">
+                        <a href="#" id="logoutBtnMobile" class="sidebar-item logout-btn" style="color: #dc3545; background-color: #fff5f5;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Desktop View Regular Sidebar -->
+            <div class="desktop-sidebar-content">
+                <div class="sidebar-menu-group">
+                    <a href="userDashboard.html" class="sidebar-item">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="userOrder.html" class="sidebar-item">
+                        <i class="fas fa-clipboard-list"></i> Orders & Transactions
+                    </a>
+                    <a href="pendingOrders.html" class="sidebar-item">
+                        <i class="fas fa-clock"></i> Pending Orders
+                    </a>
+                    <a href="userMessage.html" class="sidebar-item active">
+                        <i class="fas fa-comments"></i> Messages
+                    </a>
+                    <a href="profile.html" class="sidebar-item">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                </div>
+                
+                <div style="padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.08);">
+                    <a href="#" id="logoutBtnDesktop" class="sidebar-item logout-btn" style="color: #dc3545; background-color: #fff5f5;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
             </div>
         </aside>
 
@@ -177,15 +218,34 @@
             });
         });
 
+        const handleLogout = (e) => {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('ifc_user_firstname');
+            window.location.href = '../index.html';
+        };
+
+        const logoutBtnMob = document.getElementById('logoutBtnMobile');
+        const logoutBtnDesk = document.getElementById('logoutBtnDesktop');
+        if (logoutBtnMob) logoutBtnMob.addEventListener('click', handleLogout);
+        if (logoutBtnDesk) logoutBtnDesk.addEventListener('click', handleLogout);
+
         const notifBtn = document.getElementById('notifModalBtn');
         const notifOverlay = document.getElementById('notifModalOverlay');
         const closeNotifBtn = document.getElementById('closeNotifModal');
         const detailOverlay = document.getElementById('detailNotifModalOverlay');
         const closeDetailBtn = document.getElementById('closeDetailModal');
 
+        const tabAll = document.getElementById('tabAllNotif');
+        const tabUnread = document.getElementById('tabUnreadNotif');
+        let currentNotifFilter = 'all'; // Default filter
+
         if (notifBtn) {
             notifBtn.addEventListener('click', () => {
                 notifOverlay.style.display = 'flex';
+                currentNotifFilter = 'all';
+                tabAll.classList.add('active');
+                tabUnread.classList.remove('active');
                 loadModalNotifications();
             });
         }
@@ -200,6 +260,20 @@
             });
         }
 
+        tabAll.addEventListener('click', () => {
+            currentNotifFilter = 'all';
+            tabAll.classList.add('active');
+            tabUnread.classList.remove('active');
+            loadModalNotifications();
+        });
+
+        tabUnread.addEventListener('click', () => {
+            currentNotifFilter = 'unread';
+            tabUnread.classList.add('active');
+            tabAll.classList.remove('active');
+            loadModalNotifications();
+        });
+
         window.addEventListener('click', (e) => {
             if (e.target === notifOverlay) notifOverlay.style.display = 'none';
             if (e.target === detailOverlay) detailOverlay.style.display = 'none';
@@ -210,16 +284,6 @@
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
-            const logoutBtnEl = document.getElementById('logoutBtn');
-            if (logoutBtnEl) {
-                logoutBtnEl.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('ifc_user_firstname');
-                    window.location.href = '../index.html';
-                });
-            }
-
             const notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
             updateNotificationBadge(notifications);
 
@@ -230,39 +294,77 @@
             let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
             const notifListContainer = document.getElementById('notifModalList');
 
-            if (notifications.length === 0) {
-                notifListContainer.innerHTML = `<div class="empty-notif-message">No notifications found.</div>`;
+            let filteredNotifications = notifications;
+            if (currentNotifFilter === 'unread') {
+                filteredNotifications = notifications.filter(n => n.unread === true);
+            }
+
+            if (filteredNotifications.length === 0) {
+                const emptyText = currentNotifFilter === 'unread' ? 'No unread notifications.' : 'No notifications found.';
+                notifListContainer.innerHTML = `<div class="empty-notif-message">${emptyText}</div>`;
                 return;
             }
 
             notifListContainer.innerHTML = '';
-            notifications.forEach((notif, index) => {
+            filteredNotifications.forEach((notif) => {
+                const originalIndex = notifications.findIndex(n => n === notif);
+
                 const div = document.createElement('div');
                 div.className = `notif-item-popup ${notif.unread ? 'unread' : ''}`;
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+
+                const notifTitle = notif.title || notif.product || notif.name || 'Notification Update';
+                const notifDesc = notif.message || notif.desc || 'You have a new update regarding your order.';
+                const notifTime = notif.time || notif.date || 'Just now';
+
                 div.innerHTML = `
-                    <div class="notif-title">${notif.title || 'Notification'}</div>
-                    <div class="notif-desc">${notif.message || notif.desc}</div>
-                    <div class="notif-time">${notif.time || 'Just now'}</div>
+                    <div style="flex: 1; cursor: pointer;" class="notif-content-area">
+                        <div class="notif-title">${notifTitle}</div>
+                        <div class="notif-desc">${notifDesc}</div>
+                        <div class="notif-time">${notifTime}</div>
+                    </div>
+                    <button type="button" class="btn-delete-notif" data-index="${originalIndex}" title="Delete Notification" style="background: none; border: none; color: #dc3545; font-size: 1rem; cursor: pointer; padding: 5px 10px;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 `;
                 
-                div.addEventListener('click', () => {
-                    document.getElementById('detailNotifTitle').textContent = notif.title || 'Notification Details';
-                    document.getElementById('detailNotifMessage').textContent = notif.message || notif.desc || 'No message available.';
-                    document.getElementById('detailNotifTime').textContent = notif.time || 'Just now';
+                div.querySelector('.notif-content-area').addEventListener('click', () => {
+                    document.getElementById('detailNotifTitle').textContent = notifTitle;
+                    document.getElementById('detailNotifMessage').textContent = notifDesc;
+                    document.getElementById('detailNotifTime').textContent = notifTime;
 
                     detailOverlay.style.display = 'flex';
 
                     if (notif.unread) {
                         notif.unread = false;
-                        notifications[index] = notif;
+                        notifications[originalIndex] = notif;
                         localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
                         div.classList.remove('unread');
                         updateNotificationBadge(notifications);
+                        
+                        if (currentNotifFilter === 'unread') {
+                            loadModalNotifications();
+                        }
                     }
+                });
+
+                div.querySelector('.btn-delete-notif').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteSingleNotification(originalIndex);
                 });
 
                 notifListContainer.appendChild(div);
             });
+        }
+
+        function deleteSingleNotification(index) {
+            let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
+            notifications.splice(index, 1);
+            localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
+            loadModalNotifications();
+            updateNotificationBadge(notifications);
         }
 
         function updateNotificationBadge(notifications) {

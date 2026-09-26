@@ -35,16 +35,55 @@
                 <a href="../reviews.html">REVIEWS</a>
             </nav>
 
-            <div class="nav-right-actions" id="navRightActions">
-                <!-- Dynamic actions via JS -->
+            <div class="nav-right-actions">
+                <button type="button" class="nav-icon-btn notification-bell-btn" id="notifModalBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-badge" id="navNotifBadge" style="display: none;">0</span>
+                </button>
+                <a href="userCart.html" class="nav-icon-btn active" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+                <a href="profile.html" class="profile-icon-only" title="User Profile">
+                    <i class="fas fa-user"></i>
+                </a>
             </div>
         </div>
     </header>
 
+    <!-- Notification List Modal / Pop-up -->
+    <div class="notif-modal-overlay" id="notifModalOverlay">
+        <div class="notif-modal-content">
+            <div class="notif-modal-header">
+                <h3>Notifications</h3>
+                <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
+            </div>
+            <div class="notif-tabs-container">
+                <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
+                <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
+            </div>
+            <div class="notif-modal-body" id="notifModalList">
+                <div class="empty-notif-message">No notifications found.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Single Notification Message Modal -->
+    <div class="notif-modal-overlay" id="detailNotifModalOverlay" style="z-index: 1200;">
+        <div class="notif-modal-content">
+            <div class="notif-modal-header">
+                <h3 id="detailNotifTitle">Notification Details</h3>
+                <button type="button" class="close-notif-modal" id="closeDetailModal">&times;</button>
+            </div>
+            <div class="notif-modal-body" style="display: flex; flex-direction: column; gap: 15px;">
+                <p id="detailNotifMessage" style="font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #334155; line-height: 1.5; margin: 0;"></p>
+                <span id="detailNotifTime" style="font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #94a3b8;"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Cart Page Content -->
     <main class="cart-main-wrapper">
         
-        <!-- Cart Header Bar -->
         <div class="cart-header-box">
             <div class="cart-title-area">
                 <h1>Cart</h1>
@@ -55,7 +94,6 @@
             </div>
         </div>
 
-        <!-- Cart Items Box -->
         <div class="cart-content-container">
             <div class="cart-toolbar">
                 <div class="cart-search-box">
@@ -64,13 +102,11 @@
                 </div>
             </div>
 
-            <!-- Listahan ng mga items sa cart -->
             <div class="cart-items-list" id="cartItemsList">
-                <!-- Awtomatikong ika-load ng JS -->
+                <!-- Dynamic Items -->
             </div>
         </div>
 
-        <!-- Bottom Checkout Bar -->
         <div class="cart-checkout-bar">
             <div class="select-all-area">
                 <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" checked style="width: 18px; height: 18px; cursor: pointer;">
@@ -78,7 +114,7 @@
             </div>
 
             <div class="cart-summary-totals">
-                <div class="subtotal-text" id="cartSubtotalDisplay">Total with 12% VAT: ₱0.00</div>
+                <div class="subtotal-text" id="cartSubtotalDisplay">Total: ₱0.00</div>
             </div>
 
             <button class="checkout-main-btn" onclick="openOrderSummaryModal()">CHECK OUT</button>
@@ -94,17 +130,13 @@
                 <button class="close-modal-btn" onclick="closeOrderSummaryModal()"><i class="fas fa-times"></i></button>
             </div>
 
-            <!-- Product Information Box -->
             <div class="summary-section-box">
                 <div class="summary-section-title">
                     <i class="fas fa-box-open"></i> Product Information
                 </div>
-                <div id="modalSummaryItemsList">
-                    <!-- Dynamic Items -->
-                </div>
+                <div id="modalSummaryItemsList"></div>
             </div>
 
-            <!-- Subtotal & VAT Box -->
             <div class="summary-section-box">
                 <div class="summary-item-row">
                     <span>Subtotal</span>
@@ -116,7 +148,6 @@
                 </div>
             </div>
 
-            <!-- Delivery Information Box -->
             <div class="summary-section-box">
                 <div class="summary-section-title">
                     <i class="fas fa-truck"></i> Delivery Information
@@ -131,7 +162,6 @@
                 </div>
             </div>
 
-            <!-- Personal Information Box -->
             <div class="summary-section-box">
                 <div class="summary-section-title">
                     <i class="fas fa-user-circle"></i> Personal Information
@@ -150,7 +180,6 @@
                 </div>
             </div>
 
-            <!-- Payment Information Box -->
             <div class="summary-section-box">
                 <div class="summary-section-title">
                     <i class="fas fa-credit-card"></i> Payment Information
@@ -163,11 +192,10 @@
                     Send payment via GCash to: <strong>0912-345-6789 (IFC Crafts)</strong>
                 </div>
 
-                <!-- NAAYOS NA GCASH QR CODE CONTAINER (Eksakto sa disenyo ng larawan) -->
                 <div class="gcash-qr-container">
                     <div class="gcash-qr-header">Scan GCash QR Code to Pay</div>
                     <div class="gcash-qr-wrapper">
-                        <img src="../pics/gcash-qr.jpg" alt="IFC Crafts GCash QR Code" id="gcashQrImage" onerror="this.src='../pictures/IFCLogo.jpg'">
+                        <img src="../pics/qrCode.jpg" alt="IFC Crafts GCash QR Code" id="gcashQrImage" onerror="this.src='../pictures/IFCLogo.jpg'">
                     </div>
                     <div class="gcash-qr-footer">IFC Crafts Official QR</div>
                 </div>
@@ -184,7 +212,6 @@
                 </div>
             </div>
 
-            <!-- Total Amount & Proceed Button -->
             <div class="summary-total-row">
                 <span>Total Amount</span>
                 <span id="modalTotalAmount" style="font-size: 1.2rem; color: #2e7d32;">₱0</span>
@@ -206,42 +233,168 @@
         </div>
     </div>
 
-    <!-- Script Logic -->
     <script>
         let cartItems = JSON.parse(localStorage.getItem('ifc_user_cart')) || [];
+        let currentNotifFilter = 'all';
 
         document.addEventListener("DOMContentLoaded", () => {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const navRightActions = document.getElementById('navRightActions');
+            renderCart();
+            initNotifications();
+        });
 
-            if (navRightActions) {
-                if (isLoggedIn) {
-                    navRightActions.innerHTML = `
-                        <a href="userDashboard.html" class="nav-icon-btn" title="Notifications">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge" id="notifBadge" style="display: none;">0</span>
-                        </a>
-                        <a href="userCart.html" class="nav-icon-btn" title="Shopping Cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="badge" id="cartBadge" style="display: none;">0</span>
-                        </a>
-                        <a href="userDashboard.html" class="nav-icon-btn" title="User Profile">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    `;
+        function initNotifications() {
+            const notifBtn = document.getElementById('notifModalBtn');
+            const notifOverlay = document.getElementById('notifModalOverlay');
+            const closeNotifBtn = document.getElementById('closeNotifModal');
+            const detailOverlay = document.getElementById('detailNotifModalOverlay');
+            const closeDetailBtn = document.getElementById('closeDetailModal');
+
+            const tabAll = document.getElementById('tabAllNotif');
+            const tabUnread = document.getElementById('tabUnreadNotif');
+
+            if (notifBtn) {
+                notifBtn.addEventListener('click', () => {
+                    notifOverlay.style.display = 'flex';
+                    currentNotifFilter = 'all';
+                    tabAll.classList.add('active');
+                    tabUnread.classList.remove('active');
+                    loadModalNotifications();
+                });
+            }
+
+            if (closeNotifBtn) {
+                closeNotifBtn.addEventListener('click', () => {
+                    notifOverlay.style.display = 'none';
+                });
+            }
+
+            if (closeDetailBtn) {
+                closeDetailBtn.addEventListener('click', () => {
+                    detailOverlay.style.display = 'none';
+                });
+            }
+
+            if (tabAll) {
+                tabAll.addEventListener('click', () => {
+                    currentNotifFilter = 'all';
+                    tabAll.classList.add('active');
+                    tabUnread.classList.remove('active');
+                    loadModalNotifications();
+                });
+            }
+
+            if (tabUnread) {
+                tabUnread.addEventListener('click', () => {
+                    currentNotifFilter = 'unread';
+                    tabUnread.classList.add('active');
+                    tabAll.classList.remove('active');
+                    loadModalNotifications();
+                });
+            }
+
+            window.addEventListener('click', (e) => {
+                if (e.target === notifOverlay) {
+                    notifOverlay.style.display = 'none';
+                }
+                if (e.target === detailOverlay) {
+                    detailOverlay.style.display = 'none';
+                }
+            });
+
+            const notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
+            updateNotificationBadge(notifications);
+        }
+
+        function loadModalNotifications() {
+            let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
+            const notifListContainer = document.getElementById('notifModalList');
+            if (!notifListContainer) return;
+
+            let filteredNotifications = notifications;
+            if (currentNotifFilter === 'unread') {
+                filteredNotifications = notifications.filter(n => n.unread === true);
+            }
+
+            if (filteredNotifications.length === 0) {
+                const emptyText = currentNotifFilter === 'unread' ? 'No unread notifications.' : 'No notifications found.';
+                notifListContainer.innerHTML = `<div class="empty-notif-message">${emptyText}</div>`;
+                return;
+            }
+
+            notifListContainer.innerHTML = '';
+            filteredNotifications.forEach((notif) => {
+                const originalIndex = notifications.findIndex(n => n === notif);
+
+                const div = document.createElement('div');
+                div.className = `notif-item-popup ${notif.unread ? 'unread' : ''}`;
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+
+                const notifTitle = notif.title || notif.product || notif.name || 'Notification Update';
+                const notifDesc = notif.message || notif.desc || notif.text || 'You have a new update regarding your order.';
+                const notifTime = notif.time || notif.date || 'Just now';
+
+                div.innerHTML = `
+                    <div style="flex: 1; cursor: pointer;" class="notif-content-area">
+                        <div class="notif-title">${notifTitle}</div>
+                        <div class="notif-desc">${notifDesc}</div>
+                        <div class="notif-time">${notifTime}</div>
+                    </div>
+                    <button type="button" class="btn-delete-notif" data-index="${originalIndex}" title="Delete Notification" style="background: none; border: none; color: #dc3545; font-size: 1rem; cursor: pointer; padding: 5px 10px;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                
+                div.querySelector('.notif-content-area').addEventListener('click', () => {
+                    document.getElementById('detailNotifTitle').textContent = notifTitle;
+                    document.getElementById('detailNotifMessage').textContent = notifDesc;
+                    document.getElementById('detailNotifTime').textContent = notifTime;
+
+                    document.getElementById('detailNotifModalOverlay').style.display = 'flex';
+
+                    if (notif.unread) {
+                        notif.unread = false;
+                        notifications[originalIndex] = notif;
+                        localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
+                        div.classList.remove('unread');
+                        updateNotificationBadge(notifications);
+                        
+                        if (currentNotifFilter === 'unread') {
+                            loadModalNotifications();
+                        }
+                    }
+                });
+
+                div.querySelector('.btn-delete-notif').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteSingleNotification(originalIndex);
+                });
+
+                notifListContainer.appendChild(div);
+            });
+        }
+
+        function deleteSingleNotification(index) {
+            let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
+            notifications.splice(index, 1);
+            localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
+            loadModalNotifications();
+            updateNotificationBadge(notifications);
+        }
+
+        function updateNotificationBadge(notifications) {
+            const unreadCount = notifications.filter(n => n.unread === true).length;
+            const badge = document.getElementById('navNotifBadge');
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = 'inline-block';
                 } else {
-                    navRightActions.innerHTML = `
-                        <div id="navAuthArea" class="nav-auth-container">
-                            <a href="../login.html" class="auth-combined-btn">
-                                <i class="fas fa-user"></i>
-                                <span class="auth-text">LOGIN/SIGNUP</span>
-                            </a>
-                        </div>
-                    `;
+                    badge.style.display = 'none';
                 }
             }
-            renderCart();
-        });
+        }
 
         function renderCart(filterText = "") {
             const listContainer = document.getElementById('cartItemsList');
@@ -345,7 +498,7 @@
             const vat = subtotal * 0.12;
             const totalWithVat = subtotal + vat;
 
-            document.getElementById('cartSubtotalDisplay').textContent = `Total with 12% VAT: ₱${totalWithVat.toFixed(2)}`;
+            document.getElementById('cartSubtotalDisplay').textContent = `Total: ₱${totalWithVat.toFixed(2)}`;
         }
 
         function filterCartItems() {
@@ -484,7 +637,7 @@
                     orders.unshift(orderItem);
 
                     notifications.unshift({
-                        text: `Your GCash order for ${itemName} (Qty: ${qty}) amounting to ₱${total.toFixed(2)} (with 12% VAT) has been placed successfully.`,
+                        text: `Your GCash order for ${itemName} (Qty: ${qty}) amounting to ₱${total.toFixed(2)} has been placed successfully.`,
                         date: new Date().toLocaleString(),
                         unread: true
                     });

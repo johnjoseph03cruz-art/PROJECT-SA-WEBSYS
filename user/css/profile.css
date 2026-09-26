@@ -33,6 +33,18 @@ html, body {
     box-sizing: border-box;
 }
 
+/* Itinatago ang mobile dropdown sa desktop */
+.mobile-sidebar-dropdown {
+    display: none;
+}
+
+.desktop-sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
 .sidebar-menu-group {
     display: flex;
     flex-direction: column;
@@ -406,20 +418,174 @@ html, body {
     background: #333333;
 }
 
-/* Responsive adjustments */
+/* =========================================
+   RESPONSIVE MOBILE VIEW (Dropdown Accordion Sidebar)
+   ========================================= */
+@media (max-width: 1150px) {
+    .hamburger { 
+        display: flex; 
+        order: 3;
+    }
+    
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-area {
+        order: 1;
+    }
+
+    .nav-right-actions {
+        display: flex;
+        align-items: center;
+        order: 2;
+        margin-left: auto;
+        margin-right: 15px;
+        gap: 6px;
+    }
+
+    .nav-icon-btn, .profile-icon-only {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 0;
+        border-bottom: 1px solid #111827;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .nav-links a { 
+        margin: 10px 0; 
+        font-size: 1.05rem; 
+        color: #94a3b8;
+    }
+    .nav-links a:hover { color: #ffffff; }
+    .nav-links a.active { border-bottom: none; color: #ffffff; font-weight: 800; }
+    
+    .menu-toggle:checked ~ .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
 @media (max-width: 900px) {
+    html, body {
+        overflow: auto;
+        height: auto;
+    }
+
     .dashboard-wrapper {
         flex-direction: column;
+        margin-top: 80px;
+        min-height: auto;
     }
+
+    /* Itago ang desktop sidebar content sa mobile */
+    .desktop-sidebar-content {
+        display: none;
+    }
+
+    /* Ipakita ang dropdown accordion sa mobile */
     .dashboard-sidebar {
         width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
+        background-color: #ffffff;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
         padding: 15px;
         position: static;
         height: auto;
+        gap: 0;
+        box-sizing: border-box;
     }
-    .sidebar-menu-group {
-        flex-direction: row;
+
+    .mobile-sidebar-dropdown {
+        display: block;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 15px;
+    }
+
+    .sidebar-dropdown-toggle {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #000000;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        outline: none;
+    }
+
+    /* I-rotate ang arrow kapag naka-bukas ang details */
+    .mobile-sidebar-dropdown[open] .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-dropdown-content {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .mobile-dropdown-content .sidebar-item {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        margin-top: 0;
+        color: #475569;
+    }
+
+    .mobile-dropdown-content .sidebar-item.active {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    .dashboard-main-content {
+        height: auto;
+        overflow: visible;
+    }
+
+    .dashboard-content-area {
+        height: auto;
+        overflow: visible;
+        padding: 20px 15px;
+    }
+
+    .profile-scroll-area {
+        overflow-y: visible;
+        padding-right: 0;
+    }
+}
+
+/* Desktop Default Overflow Settings */
+@media (min-width: 901px) {
+    html, body {
+        overflow: hidden;
+        height: 100%;
+        margin: 0;
+        padding: 0;
     }
 }
