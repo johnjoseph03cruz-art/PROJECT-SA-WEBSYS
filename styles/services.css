@@ -5,7 +5,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif; 
 }
 
 html {
@@ -16,8 +15,16 @@ html {
 body {
     background-color: #ffffff; 
     color: #0f172a;    
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden; 
-    padding-top: 140px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 115px;
+}
+
+main {
+    flex: 1;
 }
 
 .gothic-title {
@@ -49,9 +56,10 @@ body {
     box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.15);
 }
 
+/* --- NAVBAR STYLES --- */
 .navbar {
     background-color: #000000;
-    padding: 22px 5%;
+    padding: 18px 5%;
     position: fixed;
     top: 0;
     left: 0;
@@ -72,22 +80,23 @@ body {
 .logo-area {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .nav-logo {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.15);
 }
 
 .brand-name {
     font-family: 'The Seasons', serif;
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: 1px;
     color: #ffffff;
+    white-space: nowrap;
 }
 
 .nav-links {
@@ -126,8 +135,8 @@ body {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 26px;
-    height: 18px;
+    width: 24px;
+    height: 16px;
     cursor: pointer;
     z-index: 1010;
 }
@@ -145,7 +154,7 @@ body {
     font-family: 'Inter', sans-serif;
     width: 100%;
     position: fixed;
-    top: 95px;
+    top: 70px;
     left: 0;
     z-index: 999;
     background-color: #d7bbfa;
@@ -360,12 +369,14 @@ body {
     transform: rotate(180deg);
 }
 
+/* --- FOOTER STYLES --- */
 .footer {
-    background-color: #000000; 
+    background-color: #000000;
     padding: 70px 5% 30px 5%;
     border-top: 1px solid #111827;
     width: 100%;
     color: #ffffff;
+    margin-top: 60px;
 }
 
 .footer-container {
@@ -379,15 +390,32 @@ body {
 }
 
 .footer-brand h3 {
+    font-family: 'The Seasons', serif;
     font-size: 1.4rem;
     margin-bottom: 12px;
     letter-spacing: 1px;
+    font-weight: 700;
 }
 
-.footer-brand p { color: #94a3b8; font-size: 0.9rem; }
-.footer-socials h4 { margin-bottom: 20px; font-size: 1rem; color: #cbd5e1; letter-spacing: 0.5px;}
+.footer-brand p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
 
-.social-icons { display: flex; gap: 15px; }
+.footer-socials h4,
+.footer-contact h4 {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #cbd5e1;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
 .social-icon {
     width: 42px;
     height: 42px;
@@ -402,10 +430,21 @@ body {
     border: 1px solid rgba(255,255,255,0.08);
     transition: transform 0.3s, background-color 0.3s, color 0.3s;
 }
-.social-icon:hover { transform: translateY(-3px); background-color: #ffffff; color: #000000; }
 
-.footer-contact h4 { margin-bottom: 20px; font-size: 1rem; color: #cbd5e1; }
-.footer-contact p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; }
+.social-icon:hover {
+    transform: translateY(-3px);
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.footer-contact p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
 .footer-bottom {
     max-width: 1200px;
@@ -503,17 +542,17 @@ body {
 .carousel-btn.prev { left: 15px; }
 .carousel-btn.next { right: 15px; }
 
-/* Navbar Right Actions (Index match) */
+/* Navbar Right Actions */
 .nav-right-actions {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 12px;
     margin-left: 20px;
 }
 
 .nav-icon-btn {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background-color: transparent;
     color: #ffffff;
     border-radius: 50%;
@@ -521,7 +560,7 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     position: relative;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -531,15 +570,31 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.profile-icon-only {
+    font-size: 1.1rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.profile-icon-only:hover {
+    transform: scale(1.08);
+    opacity: 0.85;
+}
+
 .badge {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 3px;
+    right: 3px;
     background-color: #ef4444;
     color: #ffffff;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    padding: 2px 5px;
+    padding: 2px 4px;
     border-radius: 10px;
     line-height: 1;
 }
@@ -557,16 +612,16 @@ body {
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 9px 16px;
+    padding: 8px 14px;
     border-radius: 25px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     letter-spacing: 0.5px;
     transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
 }
 
 .auth-combined-btn i {
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .auth-combined-btn:hover {
@@ -597,17 +652,39 @@ body {
 }
 
 @media (max-width: 1150px) {
-    .hamburger { display: flex; }
+    .hamburger { 
+        display: flex; 
+        order: 3;
+    }
     
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-area {
+        order: 1;
+    }
+
+    .nav-right-actions {
+        display: flex;
+        align-items: center;
+        order: 2;
+        margin-left: auto;
+        margin-right: 15px;
+        gap: 8px;
+    }
+
     .nav-links {
         position: absolute;
-        top: calc(100% + 1px);
+        top: 100%;
         left: 0;
         width: 100%;
         background-color: #000000;
         flex-direction: column;
         align-items: center;
-        padding: 30px 0;
+        padding: 25px 0;
         border-bottom: 1px solid #111827;
         opacity: 0;
         transform: translateY(-10px);
@@ -616,8 +693,8 @@ body {
     }
     
     .nav-links a { 
-        margin: 14px 0; 
-        font-size: 1.1rem; 
+        margin: 10px 0; 
+        font-size: 1.05rem; 
         color: #94a3b8;
     }
     .nav-links a:hover { color: #ffffff; }
@@ -625,28 +702,41 @@ body {
     
     .menu-toggle:checked ~ .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
     
-    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
-    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-    .nav-right-actions {
-        position: absolute;
-        top: 50%;
-        right: 65px;
-        transform: translateY(-50%);
-        margin-left: 0;
-    }
+    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     
-    .auth-text { display: none; }
+    .auth-text {
+        display: none; 
+    }
 
     .auth-combined-btn {
-        padding: 8px;
-        border-radius: 50%;
-        border: none;
-        background-color: transparent;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .auth-combined-btn:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-name {
+        font-size: 1.3rem;
+    }
+    .nav-logo {
+        width: 36px;
+        height: 36px;
+    }
+    .nav-right-actions {
+        gap: 6px;
+        margin-right: 10px;
+    }
+    .nav-icon-btn, .profile-icon-only {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
     }
 }

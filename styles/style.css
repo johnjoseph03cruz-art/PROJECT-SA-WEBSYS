@@ -366,12 +366,14 @@ body {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
+/* --- FOOTER STYLES (Galing sa Products) --- */
 .footer {
     background-color: #000000;
     padding: 70px 5% 30px 5%;
     border-top: 1px solid #111827;
     width: 100%;
     color: #ffffff;
+    margin-top: 60px;
 }
 
 .footer-container {
@@ -385,15 +387,32 @@ body {
 }
 
 .footer-brand h3 {
+    font-family: 'The Seasons', serif;
     font-size: 1.4rem;
     margin-bottom: 12px;
     letter-spacing: 1px;
+    font-weight: 700;
 }
 
-.footer-brand p { color: #94a3b8; font-size: 0.9rem; }
-.footer-socials h4 { margin-bottom: 20px; font-size: 1rem; color: #cbd5e1; letter-spacing: 0.5px;}
+.footer-brand p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
 
-.social-icons { display: flex; gap: 15px; }
+.footer-socials h4,
+.footer-contact h4 {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #cbd5e1;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
 .social-icon {
     width: 42px;
     height: 42px;
@@ -408,10 +427,21 @@ body {
     border: 1px solid rgba(255,255,255,0.08);
     transition: transform 0.3s, background-color 0.3s, color 0.3s;
 }
-.social-icon:hover { transform: translateY(-3px); background-color: #ffffff; color: #000000; }
 
-.footer-contact h4 { margin-bottom: 20px; font-size: 1rem; color: #cbd5e1; }
-.footer-contact p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; }
+.social-icon:hover {
+    transform: translateY(-3px);
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.footer-contact p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
 .footer-bottom {
     max-width: 1200px;
@@ -524,7 +554,7 @@ body {
 @media (max-width: 1150px) {
     .hamburger { 
         display: flex; 
-        order: 3; /* Siguraduhing nasa pinakadulo ang hamburger */
+        order: 3;
     }
     
     .nav-container {
@@ -540,7 +570,7 @@ body {
     .nav-right-actions {
         display: flex;
         align-items: center;
-        order: 2; /* Ang profile / action icons ang katabi ng logo o nasa gitna ng mobile header */
+        order: 2;
         margin-left: auto;
         margin-right: 15px;
         gap: 8px;
@@ -589,6 +619,23 @@ body {
     
     .auth-combined-btn:hover {
         background-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .footer-contact p {
+        justify-content: center;
     }
 }
 
