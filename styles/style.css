@@ -84,7 +84,7 @@ body {
 
 .navbar {
     background-color: #000000;
-    padding: 22px 5%;
+    padding: 18px 5%;
     position: fixed;
     top: 0;
     left: 0;
@@ -109,15 +109,15 @@ body {
 }
 
 .nav-logo {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.15);
 }
 
 .brand-name {
     font-family: 'The Seasons', serif;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: 1px;
     color: #ffffff;
@@ -159,8 +159,8 @@ body {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 26px;
-    height: 18px;
+    width: 24px;
+    height: 16px;
     cursor: pointer;
     z-index: 1010;
 }
@@ -423,17 +423,17 @@ body {
     font-size: 0.85rem;
 }
 
-/* --- Tamang Laki para sa Navbar Right Actions (Medyo binawasan nang bahagya) --- */
+/* --- Navbar Right Actions --- */
 .nav-right-actions {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 12px;
     margin-left: 20px;
 }
 
 .nav-icon-btn {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background-color: transparent;
     color: #ffffff;
     border-radius: 50%;
@@ -441,7 +441,7 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     position: relative;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -452,9 +452,9 @@ body {
 }
 
 .profile-icon-only {
-    font-size: 1.2rem;
-    width: 45px;
-    height: 45px;
+    font-size: 1.1rem;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -469,13 +469,13 @@ body {
 
 .badge {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 3px;
+    right: 3px;
     background-color: #ef4444;
     color: #ffffff;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    padding: 2px 5px;
+    padding: 2px 4px;
     border-radius: 10px;
     line-height: 1;
 }
@@ -493,16 +493,16 @@ body {
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 9px 16px;
+    padding: 8px 14px;
     border-radius: 25px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     letter-spacing: 0.5px;
     transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
 }
 
 .auth-combined-btn i {
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .auth-combined-btn:hover {
@@ -528,13 +528,13 @@ body {
     
     .nav-links {
         position: absolute;
-        top: calc(100% + 1px);
+        top: 100%;
         left: 0;
         width: 100%;
         background-color: #000000;
         flex-direction: column;
         align-items: center;
-        padding: 30px 0;
+        padding: 25px 0;
         border-bottom: 1px solid #111827;
         opacity: 0;
         transform: translateY(-10px);
@@ -543,8 +543,8 @@ body {
     }
     
     .nav-links a { 
-        margin: 14px 0; 
-        font-size: 1.1rem; 
+        margin: 10px 0; 
+        font-size: 1.05rem; 
         color: #94a3b8;
     }
     .nav-links a:hover { color: #ffffff; }
@@ -552,16 +552,14 @@ body {
     
     .menu-toggle:checked ~ .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
     
-    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
-    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     .nav-right-actions {
-        position: absolute;
-        top: 50%;
-        right: 65px;
-        transform: translateY(-50%);
-        margin-left: 0;
+        margin-left: auto;
+        margin-right: 15px;
+        gap: 8px;
     }
     
     .auth-text {
@@ -569,13 +567,32 @@ body {
     }
 
     .auth-combined-btn {
-        padding: 8px;
-        border-radius: 50%;
-        border: none;
-        background-color: transparent;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .auth-combined-btn:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-name {
+        font-size: 1.4rem;
+    }
+    .nav-logo {
+        width: 38px;
+        height: 38px;
+    }
+    .nav-right-actions {
+        gap: 6px;
+        margin-right: 10px;
+    }
+    .nav-icon-btn, .profile-icon-only {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
     }
 }
