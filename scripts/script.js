@@ -47,7 +47,7 @@ function setupSignupFlow() {
         dateJoined: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
       };
 
-      // Direktang itong mapupunta sa profile storage para mag-reflect sa profile_3.html
+      // Direktang itong mapupunta sa profile storage para mag-reflect sa profile
       localStorage.setItem('ifc_user_profile', JSON.stringify(userData));
       localStorage.setItem('isLoggedIn', 'true');
       
@@ -359,7 +359,7 @@ function setupProductActions() {
                     total: '₱' + totalAmount.toFixed(2),
                     date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
                     year: String(new Date().getFullYear()),
-                    status: 'pending', // Naka-pending para sa validation ng payment
+                    status: 'pending',
                     shipping: 'Taytay, Rizal',
                     payment: 'GCash',
                     receiptImage: receiptBase64
@@ -369,12 +369,10 @@ function setupProductActions() {
                 orders.unshift(orderItem);
                 localStorage.setItem('ifc_user_orders', JSON.stringify(orders));
 
-                // Idagdag din sa transactions kung ginagamit ito ng system
                 let transactions = JSON.parse(localStorage.getItem('ifc_user_transactions')) || [];
                 transactions.unshift(orderItem);
                 localStorage.setItem('ifc_user_transactions', JSON.stringify(transactions));
 
-                // ✅ GUMAWA NG NOTIFICATION PARA SA BUY NOW / PAYMENT VALIDATION
                 let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
                 const newNotif = {
                     title: 'Pending Validate of Payment',
@@ -470,7 +468,6 @@ function setupCustomFormLogic() {
           userOrders.unshift(pendingCustomData);
           localStorage.setItem('ifc_user_orders', JSON.stringify(userOrders));
 
-          // ✅ GUMAWA NG NOTIFICATION PARA SA CUSTOM REQUEST (Pending for Approval)
           let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
           const customNotif = {
               title: 'Pending for Approval',
