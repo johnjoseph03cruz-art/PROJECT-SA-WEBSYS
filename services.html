@@ -45,7 +45,6 @@
             <h3>Notifications</h3>
             <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
         </div>
-        <!-- Notification Filter Tabs (All / Unread) -->
         <div class="notif-tabs-container">
             <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
             <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
@@ -174,7 +173,82 @@
         <button class="carousel-btn next"><i class="fas fa-arrow-right"></i></button>
     </div>
 </section>
+
+<section class="custom-request-section">
+    <div class="custom-request-container glow-container">
+        <h2>Need Something Custom?</h2>
+        <p>Request a custom henna design, matching henna, henna service booking, or custom handmade item.</p>
+        <button type="button" class="request-service-btn" id="openServiceModalBtn">Request Service</button>
+    </div>
+</section>
+
 </main>
+
+<!-- SUBMIT REQUEST MODAL (May Red Asterisk na rin ang Reference Image at iba pang fields maliban sa Additional Notes) -->
+<div class="custom-modal-overlay" id="serviceRequestModalOverlay">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h3>Submit Request</h3>
+            <button type="button" class="close-custom-modal" id="closeServiceModalBtn">&times;</button>
+        </div>
+        <form id="serviceRequestForm" class="custom-modal-body">
+            <div class="form-group">
+                <label for="reqType">Request Type <span style="color: red;">*</span></label>
+                <select id="reqType" class="form-control-custom" required>
+                    <option value="" disabled selected>Select Request Type</option>
+                    <option value="Custom Henna Design">Custom Henna Design</option>
+                    <option value="Matching Henna">Matching Henna</option>
+                    <option value="Henna Service Booking">Henna Service Booking</option>
+                    <option value="Custom Handmade Item">Custom Handmade Item</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="reqDate">Preferred Date <span style="color: red;">*</span></label>
+                <input type="date" id="reqDate" class="form-control-custom" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reqQty">Quantity / Participants <span style="color: red;">*</span></label>
+                <input type="number" id="reqQty" class="form-control-custom" value="1" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reqDesc">Request Description <span style="color: red;">*</span></label>
+                <textarea id="reqDesc" class="form-control-custom" rows="3" placeholder="Describe your request..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="reqImage">Reference Image <span style="color: red;">*</span></label>
+                <div class="file-upload-wrapper">
+                    <label for="reqImage" class="choose-file-btn">Choose File</label>
+                    <span id="reqFileName" class="file-name-display">No file chosen</span>
+                    <input type="file" id="reqImage" accept="image/*" style="display: none;" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reqNotes">Additional Notes</label>
+                <textarea id="reqNotes" class="form-control-custom" rows="2" placeholder="Any additional notes..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-request-action-btn">Submit Request</button>
+        </form>
+    </div>
+</div>
+
+<!-- CUSTOM ALERT MODAL -->
+<div class="custom-modal-overlay" id="customAlertModalOverlay" style="z-index: 1300;">
+    <div class="custom-modal-content" style="max-width: 400px; text-align: center;">
+        <div class="custom-modal-header" style="justify-content: center; position: relative;">
+            <h3 id="customAlertTitle" style="margin: 0;">Notification</h3>
+        </div>
+        <div class="custom-modal-body" style="gap: 15px;">
+            <p id="customAlertMessage" style="font-size: 0.95rem; color: #334155; margin: 0; line-height: 1.5;"></p>
+            <button type="button" id="customAlertOkBtn" class="submit-request-action-btn" style="margin-top: 5px;">OK</button>
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <div class="footer-container">
@@ -224,8 +298,6 @@
                         <i class="fas fa-user"></i>
                     </a>
                 `;
-                
-                // I-setup ang mga event listeners para sa notification modal pagkatapos ma-render
                 setupNotificationListeners();
                 checkInitialNotifications();
             } else {
@@ -241,6 +313,7 @@
         }
         
         loadGallery();
+        setupServiceModalLogic();
 
         const collapseButtons = document.querySelectorAll(".collapse-btn");
         collapseButtons.forEach(button => {
@@ -258,6 +331,127 @@
             });
         });
     });
+
+    function showServiceAlert(message, callback = null) {
+        const alertOverlay = document.getElementById('customAlertModalOverlay');
+        const alertMsg = document.getElementById('customAlertMessage');
+        const alertOkBtn = document.getElementById('customAlertOkBtn');
+
+        if (alertMsg) alertMsg.textContent = message;
+        if (alertOverlay) alertOverlay.style.display = 'flex';
+
+        if (alertOkBtn) {
+            const newBtn = alertOkBtn.cloneNode(true);
+            alertOkBtn.parentNode.replaceChild(newBtn, alertOkBtn);
+            newBtn.addEventListener('click', () => {
+                if (alertOverlay) alertOverlay.style.display = 'none';
+                if (callback) callback();
+            });
+        }
+    }
+
+    function setupServiceModalLogic() {
+        const openBtn = document.getElementById('openServiceModalBtn');
+        const overlay = document.getElementById('serviceRequestModalOverlay');
+        const closeBtn = document.getElementById('closeServiceModalBtn');
+        const fileInput = document.getElementById('reqImage');
+        const fileNameSpan = document.getElementById('reqFileName');
+        const form = document.getElementById('serviceRequestForm');
+
+        if (!openBtn) return;
+
+        openBtn.addEventListener('click', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                showServiceAlert('Please login first to request a service.', () => {
+                    window.location.href = 'login.html';
+                });
+                return;
+            }
+            overlay.style.display = 'flex';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.style.display = 'none';
+            }
+        });
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    fileNameSpan.textContent = e.target.files[0].name;
+                } else {
+                    fileNameSpan.textContent = 'No file chosen';
+                }
+            });
+        }
+
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const typeVal = document.getElementById('reqType').value;
+                const dateVal = document.getElementById('reqDate').value;
+                const qtyVal = parseInt(document.getElementById('reqQty').value) || 1;
+                const descVal = document.getElementById('reqDesc').value;
+                const notesVal = document.getElementById('reqNotes').value;
+
+                const saveRequestData = (imgBase64 = '') => {
+                    const newRequest = {
+                        id: 'REQ-' + Math.floor(1000 + Math.random() * 9000),
+                        product: typeVal,
+                        name: typeVal,
+                        craft: typeVal,
+                        date: dateVal,
+                        qty: qtyVal,
+                        quantity: qtyVal,
+                        description: descVal,
+                        notes: notesVal,
+                        image: imgBase64 || 'pics/Logo.jpg',
+                        price: '₱0.00',
+                        status: 'pending',
+                        submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    };
+
+                    let pendingOrders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
+                    pendingOrders.unshift(newRequest);
+                    localStorage.setItem('ifc_user_orders', JSON.stringify(pendingOrders));
+
+                    let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
+                    notifications.unshift({
+                        title: 'Service Request Submitted',
+                        message: `Your request for ${typeVal} has been successfully submitted and added to pending orders.`,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' - ' + new Date().toLocaleDateString(),
+                        unread: true
+                    });
+                    localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
+
+                    overlay.style.display = 'none';
+                    form.reset();
+                    fileNameSpan.textContent = 'No file chosen';
+
+                    showServiceAlert('Request submitted successfully! Redirecting to pending orders.', () => {
+                        window.location.href = 'user/pendingOrders.html';
+                    });
+                };
+
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        saveRequestData(evt.target.result);
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    saveRequestData('');
+                }
+            });
+        }
+    }
 
     function setupNotificationListeners() {
         const notifBtn = document.getElementById('notifModalBtn');

@@ -1,5 +1,5 @@
 /* =========================================
-   NAVBAR RIGHT ACTIONS & MAS MALALAKING ICONS
+   NAVBAR RIGHT ACTIONS & ICONS
    ========================================= */
 .nav-right-actions {
     display: flex;
@@ -62,7 +62,7 @@
 }
 
 /* =========================================
-   NOTIFICATION MODAL POP-UP STYLES (FB STYLE)
+   NOTIFICATION MODAL POP-UP STYLES
    ========================================= */
 .notif-modal-overlay {
     display: none;
@@ -121,7 +121,6 @@
     color: #000000;
 }
 
-/* Notification Tabs (All & Unread) */
 .notif-tabs-container {
     display: flex;
     gap: 10px;
@@ -374,12 +373,17 @@
     color: #64748b;
 }
 
+/* =========================================
+   RECENT ORDERS & TRANSACTION CARD STYLES
+   ========================================= */
 .recent-orders-container {
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .recent-orders-header {
@@ -395,6 +399,7 @@
     font-weight: 700;
     font-size: 1.1rem;
     color: #000000;
+    margin: 0;
 }
 
 .view-all-link {
@@ -412,53 +417,52 @@
     text-decoration: underline;
 }
 
-#recentOrdersList {
-    padding: 15px 20px;
+.transactions-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-height: 260px;
+    max-height: 350px;
     overflow-y: auto;
 }
 
 .transaction-card-item {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 14px 18px;
-    transition: all 0.2s ease;
+    padding: 18px 25px;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.15s ease;
+}
+
+.transaction-card-item:last-child {
+    border-bottom: none;
 }
 
 .transaction-card-item:hover {
-    border-color: #cbd5e1;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    background-color: #f8fafc;
 }
 
 .tx-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.85rem;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 6px;
+    margin-bottom: 12px;
 }
 
 .order-id-label {
-    font-weight: 700;
-    color: #000000;
     font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #000000;
 }
 
 .tx-date {
-    color: #64748b;
     font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: #64748b;
 }
 
 .tx-card-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 15px;
 }
 
@@ -469,89 +473,110 @@
 }
 
 .tx-product-img {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e2e8f0;
 }
 
 .tx-product-info h3 {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
     font-weight: 600;
+    font-size: 0.9rem;
     color: #000000;
     margin-bottom: 2px;
 }
 
 .craft-type, .qty-text {
     font-family: 'Inter', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: #64748b;
     margin: 0;
 }
 
 .tx-card-meta {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
+    align-items: center;
+    gap: 25px;
 }
 
 .total-price-group {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .total-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
     color: #64748b;
-    margin-right: 5px;
 }
 
 .total-amount {
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
+    font-size: 0.95rem;
     color: #000000;
 }
 
 .tx-action-group {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
 }
 
+/* Status Badges */
 .status-badge {
-    padding: 3px 8px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 600;
     font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-align: center;
 }
 
-.status-badge.completed {
-    background-color: #dcfce7;
-    color: #166534;
+.status-badge.process {
+    background-color: #dbeafe;
+    color: #1e40af;
 }
 
-.status-badge.in-progress {
-    background-color: #fef9c3;
-    color: #854d0e;
+.status-badge.completed, .status-badge.verified {
+    background-color: #2e7d32;
+    color: #ffffff;
 }
 
+.status-badge.pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.rejected, .status-badge.cancelled {
+    background-color: #d32f2f;
+    color: #ffffff;
+}
+
+/* Rounded Rectangle Button for View Details */
 .view-details-link {
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
-    font-weight: 600;
-    color: #000000;
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 5px 12px;
+    border-radius: 20px;
     text-decoration: none;
-    padding: 3px 8px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    background: #ffffff;
-    transition: background 0.2s;
+    font-weight: 600;
+    display: inline-block;
+    transition: all 0.2s ease;
 }
 
 .view-details-link:hover {
-    background: #f1f5f9;
+    background-color: #333333;
+    color: #ffffff;
+    border-color: #333333;
+    text-decoration: none;
 }
 
 .empty-orders-message {
@@ -559,14 +584,14 @@
     text-align: center;
     color: #64748b;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 /* =========================================
    RESPONSIVE MEDIA QUERIES
    ========================================= */
 @media (min-width: 901px) {
-    .notif-modal-overlay {
+    .notif-modal-overlay:not(#orderModal) {
         background-color: transparent !important;
         justify-content: flex-end !important;
         align-items: flex-start !important;
@@ -653,24 +678,6 @@
     html, body {
         overflow: auto;
         height: auto;
-    }
-
-    .notif-modal-overlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        background-color: rgba(0, 0, 0, 0.5) !important;
-        justify-content: center !important;
-        align-items: center !important;
-        padding: 15px !important;
-        pointer-events: auto !important;
-    }
-
-    .notif-modal-content {
-        max-width: 100% !important;
-        max-height: 85vh;
     }
 
     .dashboard-wrapper {
@@ -766,14 +773,5 @@
         margin-top: 10px;
         border-top: 1px solid #e2e8f0;
         padding-top: 8px;
-    }
-}
-
-@media (min-width: 901px) {
-    html, body {
-        overflow: hidden;
-        height: 100%;
-        margin: 0;
-        padding: 0;
     }
 }

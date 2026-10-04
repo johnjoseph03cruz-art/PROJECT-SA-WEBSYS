@@ -58,7 +58,6 @@
                 <h3>Notifications</h3>
                 <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
             </div>
-            <!-- Notification Filter Tabs (All / Unread) -->
             <div class="notif-tabs-container">
                 <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
                 <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
@@ -99,7 +98,6 @@
         
         <!-- Sidebar Navigation -->
         <aside class="dashboard-sidebar">
-            <!-- Mobile View Dropdown Accordion Wrapper -->
             <details class="mobile-sidebar-dropdown">
                 <summary class="sidebar-dropdown-toggle">
                     <span><i class="fas fa-bars"></i> Menu</span>
@@ -132,7 +130,6 @@
                 </div>
             </details>
 
-            <!-- Desktop View Regular Sidebar -->
             <div class="desktop-sidebar-content">
                 <div class="sidebar-menu-group">
                     <a href="userDashboard.html" class="sidebar-item">
@@ -264,7 +261,7 @@
 
         const tabAll = document.getElementById('tabAllNotif');
         const tabUnread = document.getElementById('tabUnreadNotif');
-        let currentNotifFilter = 'all'; // Default filter
+        let currentNotifFilter = 'all';
 
         if (notifBtn) notifBtn.addEventListener('click', () => { 
             notifOverlay.style.display = 'flex'; 
@@ -510,7 +507,7 @@
                                 <img src="${image}" alt="Product" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;" onerror="this.src='../pictures/necklace.jpg'">
                                 <div>
                                     <h4 style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: #000;">${product}</h4>
-                                    <p style="margin: 2px 0 0; font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #64748b;">Craft: ${craft} | Qty: ${qty}</p>
+                                    <p style="margin: 2px 0 0; font-family: 'Inter', sans-serif; font-size: 0.80rem; color: #64748b;">Craft: ${craft} | Qty: ${qty}</p>
                                 </div>
                             </div>
                         </div>

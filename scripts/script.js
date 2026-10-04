@@ -1,16 +1,13 @@
 // ✅ GLOBAL VARIABLES
 let allProducts = [];
 let activeProduct = null;
-let pendingCustomData = null;
 
 // ✅ RUN AFTER PAGE LOAD
 document.addEventListener("DOMContentLoaded", () => {
-  // Sinisigurong malinis o zero ang estado sa unang bukas/login maliban kung may aktibong sesyon
   initializeCleanState();
   
   loadProducts();
   setupFilters();
-  setupCustomFormLogic();
   setupNavbarAuth();
   fixBodyScrolling();
   setupProductActions();
@@ -21,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeCleanState() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   if (!isLoggedIn) {
-    // I-clear ang lahat ng lumang data sa localStorage para laging 0 at malinis
     localStorage.removeItem('ifc_user_cart');
     localStorage.removeItem('ifc_user_orders');
     localStorage.removeItem('ifc_user_profile');
@@ -47,11 +43,9 @@ function setupSignupFlow() {
         dateJoined: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
       };
 
-      // Direktang itong mapupunta sa profile storage para mag-reflect sa profile
       localStorage.setItem('ifc_user_profile', JSON.stringify(userData));
       localStorage.setItem('isLoggedIn', 'true');
       
-      // I-reset sa 0 / empty array ang cart, orders, transactions, at messages para sa bagong user
       localStorage.setItem('ifc_user_cart', JSON.stringify([]));
       localStorage.setItem('ifc_user_orders', JSON.stringify([]));
       localStorage.setItem('ifc_user_transactions', JSON.stringify([]));
@@ -78,24 +72,43 @@ function fixBodyScrolling() {
 // ✅ HELPER PARA SA SMALL CUSTOM ALERT MODAL
 function showCustomAlert(message, callback = null) {
     const msgEl = document.getElementById('smallAlertMessage');
-    if (msgEl) msgEl.textContent = message;
-    
-    const alertModalEl = document.getElementById('smallAlertModal');
-    if (alertModalEl) {
-        const alertModal = new bootstrap.Modal(alertModalEl);
-        alertModal.show();
+    if (msgEl) {
+        msgEl.textContent = message;
+        const alertModalEl = document.getElementById('smallAlertModal');
+        if (alertModalEl) {
+            const alertModal = new bootstrap.Modal(alertModalEl);
+            alertModal.show();
 
-        if (callback) {
-            const okBtn = document.getElementById('smallAlertOkBtn');
-            if (okBtn) {
-                const newOkBtn = okBtn.cloneNode(true);
-                okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-                newOkBtn.addEventListener('click', () => {
-                    alertModal.hide();
-                    callback();
-                });
+            if (callback) {
+                const okBtn = document.getElementById('smallAlertOkBtn');
+                if (okBtn) {
+                    const newOkBtn = okBtn.cloneNode(true);
+                    okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+                    newOkBtn.addEventListener('click', () => {
+                        alertModal.hide();
+                        callback();
+                    });
+                }
             }
         }
+        return;
+    }
+
+    // Fallback kung nasa services page kung saan gamit ang custom alert overlay modal
+    const alertOverlay = document.getElementById('customAlertModalOverlay');
+    const alertMsg = document.getElementById('customAlertMessage');
+    const alertOkBtn = document.getElementById('customAlertOkBtn');
+
+    if (alertMsg) alertMsg.textContent = message;
+    if (alertOverlay) alertOverlay.style.display = 'flex';
+
+    if (alertOkBtn) {
+        const newBtn = alertOkBtn.cloneNode(true);
+        alertOkBtn.parentNode.replaceChild(newBtn, alertOkBtn);
+        newBtn.addEventListener('click', () => {
+            if (alertOverlay) alertOverlay.style.display = 'none';
+            if (callback) callback();
+        });
     }
 }
 
@@ -390,101 +403,4 @@ function setupProductActions() {
             reader.readAsDataURL(receiptInput.files[0]);
         });
     }
-}
-
-// ✅ CUSTOM FORM & PENDING ORDERS LOGIC
-function setupCustomFormLogic() {
-  const refInput = document.getElementById('customRefImage');
-  if (refInput) {
-      refInput.addEventListener('change', (e) => {
-          if (e.target.files && e.target.files[0]) {
-              const label = document.getElementById('refFileLabel');
-              if (label) label.textContent = "Attached: " + e.target.files[0].name;
-          }
-      });
-  }
-
-  const customForm = document.getElementById('customForm');
-  if (customForm) {
-      customForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          
-          const typeEl = document.querySelector('input[name="customType"]:checked');
-          const fileInput = document.getElementById('customRefImage');
-
-          const processSubmission = (imageUrl = '') => {
-              const typeVal = typeEl ? typeEl.value : 'Custom Craft';
-              pendingCustomData = {
-                  id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
-                  product: 'Custom ' + typeVal,
-                  name: 'Custom ' + typeVal,
-                  craft: typeVal,
-                  designDesc: document.getElementById('customDesignDesc').value,
-                  material: document.getElementById('customMaterial').value || 'Standard',
-                  color: document.getElementById('customColor').value || 'Any',
-                  sizeMeasure: document.getElementById('customSizeMeasure').value || 'Standard',
-                  addNotes: document.getElementById('customAddNotes').value,
-                  fullName: document.getElementById('customFullName').value,
-                  contactNum: document.getElementById('customContactNum').value,
-                  email: document.getElementById('customEmail').value,
-                  image: imageUrl || 'pics/Logo.jpg',
-                  price: '₱0.00',
-                  qty: 1,
-                  status: 'pending',
-                  date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-              };
-
-              const customModalEl = document.getElementById('customModal');
-              const customModal = bootstrap.Modal.getInstance(customModalEl);
-              if (customModal) customModal.hide();
-
-              setTimeout(() => {
-                  const noticeModalEl = document.getElementById('importantNoticeModal');
-                  if (noticeModalEl) {
-                      const noticeModal = new bootstrap.Modal(noticeModalEl);
-                      noticeModal.show();
-                  }
-              }, 300);
-          };
-
-          if (fileInput && fileInput.files && fileInput.files[0]) {
-              const reader = new FileReader();
-              reader.onload = function(evt) {
-                  processSubmission(evt.target.result);
-              };
-              reader.readAsDataURL(fileInput.files[0]);
-          } else {
-              processSubmission('');
-          }
-      });
-  }
-
-  const agreeNoticeBtn = document.getElementById('agreeNoticeBtn');
-  if (agreeNoticeBtn) {
-      agreeNoticeBtn.addEventListener('click', () => {
-          if (!pendingCustomData) return;
-
-          let userOrders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-          userOrders.unshift(pendingCustomData);
-          localStorage.setItem('ifc_user_orders', JSON.stringify(userOrders));
-
-          let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
-          const customNotif = {
-              title: 'Pending for Approval',
-              message: `Your custom request (${pendingCustomData.product}) with ID ${pendingCustomData.id} has been submitted and is now pending for approval by our team.`,
-              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' - ' + new Date().toLocaleDateString(),
-              unread: true
-          };
-          notifications.unshift(customNotif);
-          localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
-
-          const noticeModalEl = document.getElementById('importantNoticeModal');
-          const noticeModal = bootstrap.Modal.getInstance(noticeModalEl);
-          if (noticeModal) noticeModal.hide();
-
-          showCustomAlert('Custom request submitted successfully! Pending for approval. Redirecting to your Pending Orders page.', () => {
-              window.location.href = 'user/pendingOrders.html';
-          });
-      });
-  }
 }

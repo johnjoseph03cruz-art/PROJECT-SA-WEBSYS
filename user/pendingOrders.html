@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=The+Seasons&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="css/userDashboard.css">
     <link rel="stylesheet" href="css/pendingOrders.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Navbar (Copied from userDashboard.html) -->
+    <!-- Navbar -->
     <header class="navbar">
         <div class="nav-container">
             <div class="logo-area">
@@ -57,7 +58,6 @@
                 <h3>Notifications</h3>
                 <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
             </div>
-            <!-- Notification Filter Tabs (All / Unread) -->
             <div class="notif-tabs-container">
                 <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
                 <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
@@ -82,25 +82,11 @@
         </div>
     </div>
 
-    <!-- Order Receipt / Details Modal -->
-    <div class="notif-modal-overlay" id="orderReceiptModalOverlay" style="z-index: 1300;">
-        <div class="notif-modal-content">
-            <div class="notif-modal-header">
-                <h3>Order Summary</h3>
-                <button type="button" class="close-notif-modal" id="closeReceiptModal">&times;</button>
-            </div>
-            <div class="notif-modal-body" id="receiptModalBody">
-                <!-- Dito papasok ang uniform checkout-style details -->
-            </div>
-        </div>
-    </div>
-
     <!-- Dashboard Container -->
     <div class="dashboard-wrapper">
         
         <!-- Sidebar Navigation -->
         <aside class="dashboard-sidebar">
-            <!-- Mobile View Dropdown Accordion Wrapper -->
             <details class="mobile-sidebar-dropdown">
                 <summary class="sidebar-dropdown-toggle">
                     <span><i class="fas fa-bars"></i> Menu</span>
@@ -133,7 +119,6 @@
                 </div>
             </details>
 
-            <!-- Desktop View Regular Sidebar -->
             <div class="desktop-sidebar-content">
                 <div class="sidebar-menu-group">
                     <a href="userDashboard.html" class="sidebar-item">
@@ -161,23 +146,35 @@
             </div>
         </aside>
 
+        <!-- Main Content Area -->
         <main class="dashboard-main-content">
-            <div class="welcome-banner">
-                <h1>Pending Orders</h1>
-                <p>List of all your orders that are currently pending confirmation or approval.</p>
-            </div>
-
-            <div class="recent-orders-container">
-                <div class="recent-orders-header">
-                    <h2>Pending List</h2>
+            <div class="transaction-container-box">
+                <div class="transaction-main-header">
+                    <h1>Pending Orders</h1>
+                    <p>List of all your orders that are currently pending confirmation or approval.</p>
                 </div>
-                <div id="pendingOrdersList">
-                    <div class="empty-orders-message">
+
+                <div class="transactions-list" id="pendingOrdersListContainer">
+                    <div style="padding: 30px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif;">
                         No pending orders found.
                     </div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="order-modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1300; align-items: center; justify-content: center;">
+        <div class="order-modal-content" style="background: #fff; width: 100%; max-width: 480px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 20px; display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <h2 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Order Summary</h2>
+                <button id="closeModalBtn" class="close-modal" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBodyContent" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <div class="modal-footer" style="padding-top: 10px; border-top: 1px solid #e2e8f0; text-align: right;">
+                <button id="closeModalActionBtn" class="modal-btn-close" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Close</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -189,265 +186,244 @@
 
         const handleLogout = (e) => {
             e.preventDefault();
-            localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('ifc_user_firstname');
+            localStorage.removeItem('isLoggedIn');
             window.location.href = '../index.html';
         };
 
-        const logoutBtnMob = document.getElementById('logoutBtnMobile');
-        const logoutBtnDesk = document.getElementById('logoutBtnDesktop');
-        if (logoutBtnMob) logoutBtnMob.addEventListener('click', handleLogout);
-        if (logoutBtnDesk) logoutBtnDesk.addEventListener('click', handleLogout);
+        document.getElementById('logoutBtnMobile').addEventListener('click', handleLogout);
+        document.getElementById('logoutBtnDesktop').addEventListener('click', handleLogout);
 
         const notifBtn = document.getElementById('notifModalBtn');
         const notifOverlay = document.getElementById('notifModalOverlay');
         const closeNotifBtn = document.getElementById('closeNotifModal');
         const detailOverlay = document.getElementById('detailNotifModalOverlay');
         const closeDetailBtn = document.getElementById('closeDetailModal');
-        const receiptOverlay = document.getElementById('orderReceiptModalOverlay');
-        const closeReceiptBtn = document.getElementById('closeReceiptModal');
 
         const tabAll = document.getElementById('tabAllNotif');
         const tabUnread = document.getElementById('tabUnreadNotif');
-        let currentNotifFilter = 'all'; // Default filter
+        let currentNotifFilter = 'all';
 
         if (notifBtn) notifBtn.addEventListener('click', () => { 
             notifOverlay.style.display = 'flex'; 
             currentNotifFilter = 'all';
-            tabAll.classList.add('active');
-            tabUnread.classList.remove('active');
+            if (tabAll) tabAll.classList.add('active');
+            if (tabUnread) tabUnread.classList.remove('active');
             loadModalNotifications(); 
         });
+
         if (closeNotifBtn) closeNotifBtn.addEventListener('click', () => { notifOverlay.style.display = 'none'; });
         if (closeDetailBtn) closeDetailBtn.addEventListener('click', () => { detailOverlay.style.display = 'none'; });
-        if (closeReceiptBtn) closeReceiptBtn.addEventListener('click', () => { receiptOverlay.style.display = 'none'; });
 
-        tabAll.addEventListener('click', () => {
-            currentNotifFilter = 'all';
-            tabAll.classList.add('active');
-            tabUnread.classList.remove('active');
-            loadModalNotifications();
-        });
+        if (tabAll) {
+            tabAll.addEventListener('click', () => {
+                currentNotifFilter = 'all';
+                tabAll.classList.add('active');
+                tabUnread.classList.remove('active');
+                loadModalNotifications();
+            });
+        }
 
-        tabUnread.addEventListener('click', () => {
-            currentNotifFilter = 'unread';
-            tabUnread.classList.add('active');
-            tabAll.classList.remove('active');
-            loadModalNotifications();
-        });
+        if (tabUnread) {
+            tabUnread.addEventListener('click', () => {
+                currentNotifFilter = 'unread';
+                tabUnread.classList.add('active');
+                tabAll.classList.remove('active');
+                loadModalNotifications();
+            });
+        }
 
         window.addEventListener('click', (e) => {
             if (e.target === notifOverlay) notifOverlay.style.display = 'none';
             if (e.target === detailOverlay) detailOverlay.style.display = 'none';
-            if (e.target === receiptOverlay) receiptOverlay.style.display = 'none';
         });
 
         document.addEventListener("DOMContentLoaded", () => {
-            syncOrdersAndTransactions();
-            loadPendingOrdersData();
-            
+            loadPendingOrders();
             const notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
             updateNotificationBadge(notifications);
         });
 
-        function syncOrdersAndTransactions() {
-            let orders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-            let transactions = JSON.parse(localStorage.getItem('ifc_user_transactions')) || [];
-            let remainingOrders = [];
-
-            orders.forEach(order => {
-                const orderStatus = order.status ? order.status.toLowerCase().trim() : 'pending';
-                if (orderStatus !== 'pending') {
-                    const existsInTx = transactions.some(tx => String(tx.id) === String(order.id));
-                    if (!existsInTx) {
-                        transactions.push({
-                            id: order.id,
-                            date: order.date,
-                            product: order.product || order.name,
-                            craft: order.craft || 'Handmade Craft',
-                            qty: order.qty || order.quantity || 1,
-                            price: order.price,
-                            status: orderStatus,
-                            shipping: order.shipping || 'Taytay, Rizal',
-                            payment: order.paymentMethod || order.payment || 'GCash',
-                            image: order.image || '../pictures/necklace.jpg'
-                        });
-                    }
-                } else {
-                    remainingOrders.push(order);
-                }
-            });
-
-            localStorage.setItem('ifc_user_orders', JSON.stringify(remainingOrders));
-            localStorage.setItem('ifc_user_transactions', JSON.stringify(transactions));
-        }
-
-        function getStatusBadgeClass(status) {
-            if (!status) return 'pending';
-            const s = status.toLowerCase();
-            if (s === 'complete' || s === 'completed') return 'complete';
-            if (s === 'pending') return 'pending';
-            if (s === 'rejected') return 'rejected';
-            if (s === 'process' || s === 'processing' || s === 'shipping') return 'process';
-            return 'pending';
-        }
-
-        function loadPendingOrdersData() {
+        function loadPendingOrders() {
+            const container = document.getElementById('pendingOrdersListContainer');
             const orders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-            const pendingOrders = orders.filter(o => o.status && o.status.toLowerCase() === 'pending');
-            const container = document.getElementById('pendingOrdersList');
+            const pendingOrders = orders.filter(item => item.status && item.status.toLowerCase() === 'pending');
 
+            container.innerHTML = '';
             if (pendingOrders.length === 0) {
-                container.innerHTML = `<div class="empty-orders-message">No pending orders found.</div>`;
+                container.innerHTML = `<div style="padding: 30px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif;">No pending orders found.</div>`;
                 return;
             }
 
-            container.innerHTML = '';
-            pendingOrders.forEach(order => {
-                const statusClass = getStatusBadgeClass(order.status);
-                const displayStatus = order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Pending';
+            pendingOrders.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card-item';
+                card.setAttribute('data-id', item.id);
+                card.setAttribute('data-product', item.product || item.name);
+                card.setAttribute('data-craft', item.craft || 'Handmade Craft');
+                card.setAttribute('data-qty', item.qty || item.quantity || 1);
+                card.setAttribute('data-price', item.price || item.total);
+                card.setAttribute('data-date', item.date || '');
+                card.setAttribute('data-shipping', item.shipping || 'Taytay, Rizal');
+                card.setAttribute('data-payment', item.paymentMethod || item.payment || 'GCash');
+                card.setAttribute('data-status', 'pending');
+                card.setAttribute('data-image', item.image || '../pictures/necklace.jpg');
+                card.setAttribute('data-customer', item.customerName || 'Juan Dela Cruz');
+                card.setAttribute('data-contact', item.contactNumber || '09123456789');
+                card.setAttribute('data-receipt', item.receiptImage || item.receipt || '');
 
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'transaction-card-item';
-                itemDiv.innerHTML = `
+                card.innerHTML = `
                     <div class="tx-card-header">
-                        <span class="order-id-label">Order# ${order.id}</span>
-                        <span class="tx-date">${order.date}</span>
+                        <span class="order-id-label">Order# ${item.id}</span>
+                        <span class="tx-date">${item.date}</span>
                     </div>
                     <div class="tx-card-body">
                         <div class="product-preview">
-                            <img src="${order.image || '../pictures/necklace.jpg'}" alt="${order.product || order.name}" class="tx-product-img" onerror="this.src='../pictures/necklace.jpg'">
+                            <img src="${item.image || '../pictures/necklace.jpg'}" alt="${item.product || item.name}" class="tx-product-img" onerror="this.src='../pictures/necklace.jpg'">
                             <div class="tx-product-info">
-                                <h3>${order.product || order.name}</h3>
-                                <p class="craft-type">${order.craft || 'Handmade Craft'}</p>
-                                <p class="qty-text">Qty.: ${order.qty || order.quantity || 1}</p>
+                                <h3>${item.product || item.name}</h3>
+                                <p class="craft-type">${item.craft || 'Handmade Craft'}</p>
+                                <p class="qty-text">Qty.: ${item.qty || item.quantity || 1}</p>
                             </div>
                         </div>
                         <div class="tx-card-meta">
                             <div class="total-price-group">
                                 <span class="total-label">Total:</span>
-                                <span class="total-amount">${order.price}</span>
+                                <span class="total-amount">${item.price || item.total}</span>
                             </div>
                             <div class="tx-action-group">
-                                <span class="status-badge ${statusClass}">${displayStatus}</span>
-                                <button type="button" onclick="viewOrderReceipt('${order.id}')" class="view-details-link">View</button>
+                                <span class="status-badge pending">Pending</span>
+                                <a href="#" class="view-details-link">View Details</a>
                             </div>
                         </div>
                     </div>
                 `;
-                container.appendChild(itemDiv);
+                container.appendChild(card);
             });
+
+            initModalListeners();
         }
 
-        function viewOrderReceipt(orderId) {
-            const orders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-            const order = orders.find(o => o.id == orderId);
-            if (!order) return;
+        function initModalListeners() {
+            const modal = document.getElementById('orderModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const closeModalActionBtn = document.getElementById('closeModalActionBtn');
+            const modalBodyContent = document.getElementById('modalBodyContent');
 
-            const statusClass = getStatusBadgeClass(order.status);
-            const displayStatus = order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Pending';
-            const receiptBody = document.getElementById('receiptModalBody');
-            
-            const rawPriceStr = order.price ? order.price.replace(/[^\d.]/g, '') : '0';
-            const totalPrice = parseFloat(rawPriceStr) || 0;
-            const shippingFee = 50.00;
-            
-            let itemTotalWithoutShipping = totalPrice > shippingFee ? totalPrice - shippingFee : totalPrice;
-            let vatAmount = itemTotalWithoutShipping * 0.12;
-            let subtotal = itemTotalWithoutShipping - vatAmount;
+            document.querySelectorAll('.view-details-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const card = e.target.closest('.transaction-card-item');
+                    
+                    const id = card.getAttribute('data-id');
+                    const product = card.getAttribute('data-product');
+                    const craft = card.getAttribute('data-craft');
+                    const qty = card.getAttribute('data-qty');
+                    const price = card.getAttribute('data-price');
+                    const date = card.getAttribute('data-date');
+                    const shipping = card.getAttribute('data-shipping');
+                    const payment = card.getAttribute('data-payment');
+                    const image = card.getAttribute('data-image');
+                    const customerName = card.getAttribute('data-customer');
+                    const contactNumber = card.getAttribute('data-contact');
+                    const receiptImage = card.getAttribute('data-receipt');
 
-            const customerName = order.customerName || order.name || 'Juan Dela Cruz';
-            const contactNumber = order.contactNumber || '09123456789';
-            const shippingAddress = order.shipping || 'Taytay, Rizal';
-            const paymentMethod = order.paymentMethod || order.payment || 'GCash';
-            const receiptImg = order.receiptImage || order.receipt || '';
+                    const rawPriceStr = price ? price.replace(/[^\d.]/g, '') : '0';
+                    const totalPrice = parseFloat(rawPriceStr) || 0;
+                    let vatAmount = totalPrice * 0.12;
+                    let subtotal = totalPrice - vatAmount;
 
-            receiptBody.innerHTML = `
-                <div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 10px; margin-bottom: 5px;">
-                    <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Order ID: <strong>#${order.id}</strong></p>
-                    <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Date: ${order.date}</p>
-                    <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Status: <span class="status-badge ${statusClass}" style="display: inline-block; padding: 2px 8px; font-size: 0.75rem;">${displayStatus}</span></p>
-                </div>
-
-                <div class="summary-section-box">
-                    <div class="summary-section-title">
-                        <i class="fas fa-box-open"></i> Product Information
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="${order.image || '../pictures/necklace.jpg'}" alt="Product" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <div>
-                            <h4 style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: #000;">${order.product || order.name}</h4>
-                            <p style="margin: 2px 0 0; font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #64748b;">Qty: ${order.qty || order.quantity || 1}</p>
+                    modalBodyContent.innerHTML = `
+                        <div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 10px; margin-bottom: 5px;">
+                            <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Order ID: <strong>#${id}</strong></p>
+                            <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Date: ${date}</p>
+                            <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #64748b;">Status: <span class="status-badge pending" style="display: inline-block; padding: 2px 8px; font-size: 0.75rem;">Pending</span></p>
                         </div>
-                    </div>
-                </div>
 
-                <div class="summary-section-box">
-                    <div class="summary-item-row">
-                        <span>Subtotal</span>
-                        <span>₱${subtotal.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-item-row">
-                        <span>VAT (12%)</span>
-                        <span>₱${vatAmount.toFixed(2)}</span>
-                    </div>
-                </div>
-
-                <div class="summary-section-box">
-                    <div class="summary-section-title">
-                        <i class="fas fa-truck"></i> Delivery Information
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Delivery Method</span>
-                        <span>Meet-up</span>
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Location</span>
-                        <span>${shippingAddress}</span>
-                    </div>
-                </div>
-
-                <div class="summary-section-box">
-                    <div class="summary-section-title">
-                        <i class="fas fa-user-circle"></i> Personal Information
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Name</span>
-                        <strong style="color: #000;">${customerName}</strong>
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Contact Number</span>
-                        <strong style="color: #000;">${contactNumber}</strong>
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Address</span>
-                        <span style="text-align: right; max-width: 220px;">${shippingAddress}</span>
-                    </div>
-                </div>
-
-                <div class="summary-section-box">
-                    <div class="summary-section-title">
-                        <i class="fas fa-credit-card"></i> Payment Information
-                    </div>
-                    <div class="summary-item-row">
-                        <span>Method</span>
-                        <strong style="text-transform: uppercase;">${paymentMethod}</strong>
-                    </div>
-                    <div class="summary-item-row" style="align-items: center; margin-top: 8px;">
-                        <span>Proof of Payment</span>
-                        <div>
-                            ${receiptImg ? `<img src="${receiptImg}" alt="Proof of Payment" class="proof-thumbnail-img" onclick="window.open('${receiptImg}', '_blank')">` : '<span style="font-size: 0.8rem; color: #94a3b8;">No Image</span>'}
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                                <i class="fas fa-box-open"></i> Product Information
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="${image}" alt="Product" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;" onerror="this.src='../pictures/necklace.jpg'">
+                                <div>
+                                    <h4 style="margin: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: #000;">${product}</h4>
+                                    <p style="margin: 2px 0 0; font-family: 'Inter', sans-serif; font-size: 0.80rem; color: #64748b;">Craft: ${craft} | Qty: ${qty}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 1rem;">
-                    <strong style="color: #000;">Total Amount</strong>
-                    <strong style="color: #2e7d32; font-size: 1.1rem;">${order.price}</strong>
-                </div>
-            `;
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                                <span>Subtotal</span>
+                                <span>₱${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                <span>VAT (12%)</span>
+                                <span>₱${vatAmount.toFixed(2)}</span>
+                            </div>
+                        </div>
 
-            receiptOverlay.style.display = 'flex';
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                                <i class="fas fa-truck"></i> Delivery Information
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                                <span>Delivery Method</span>
+                                <span>Delivery</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                <span>Location</span>
+                                <span>${shipping}</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                                <i class="fas fa-user-circle"></i> Personal Information
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                                <span>Name</span>
+                                <strong style="color: #000;">${customerName}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                                <span>Contact Number</span>
+                                <strong style="color: #000;">${contactNumber}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                <span>Address</span>
+                                <span style="text-align: right; max-width: 200px; color: #000;">${shipping}</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: #334155;">
+                                <i class="fas fa-credit-card"></i> Payment Information
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px;">
+                                <span>Method</span>
+                                <strong style="text-transform: uppercase;">${payment}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                                <span>Proof of Payment</span>
+                                ${receiptImage ? `<a href="${receiptImage}" target="_blank"><img src="${receiptImage}" alt="Proof" style="width: 45px; height: 55px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc;"></a>` : '<span style="color: #777;">No Image</span>'}
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 1rem;">
+                            <strong style="color: #000;">Total Amount</strong>
+                            <strong style="color: #2e7d32; font-size: 1.1rem;">${price}</strong>
+                        </div>
+                    `;
+
+                    modal.style.display = 'flex';
+                });
+            });
+
+            function closeModal() { modal.style.display = 'none'; }
+            if (closeModalBtn) closeModalBtn.onclick = closeModal;
+            if (closeModalActionBtn) closeModalActionBtn.onclick = closeModal;
+            window.onclick = (e) => { if (e.target === modal) closeModal(); };
         }
 
         function loadModalNotifications() {
@@ -468,7 +444,6 @@
             notifListContainer.innerHTML = '';
             filteredNotifications.forEach((notif) => {
                 const originalIndex = notifications.findIndex(n => n === notif);
-
                 const div = document.createElement('div');
                 div.className = `notif-item-popup ${notif.unread ? 'unread' : ''}`;
                 div.style.display = 'flex';
@@ -502,28 +477,20 @@
                         localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
                         div.classList.remove('unread');
                         updateNotificationBadge(notifications);
-                        
-                        if (currentNotifFilter === 'unread') {
-                            loadModalNotifications();
-                        }
+                        if (currentNotifFilter === 'unread') loadModalNotifications();
                     }
                 });
 
                 div.querySelector('.btn-delete-notif').addEventListener('click', (e) => {
                     e.stopPropagation();
-                    deleteSingleNotification(originalIndex);
+                    notifications.splice(originalIndex, 1);
+                    localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
+                    loadModalNotifications();
+                    updateNotificationBadge(notifications);
                 });
 
                 notifListContainer.appendChild(div);
             });
-        }
-
-        function deleteSingleNotification(index) {
-            let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
-            notifications.splice(index, 1);
-            localStorage.setItem('ifc_user_notifications', JSON.stringify(notifications));
-            loadModalNotifications();
-            updateNotificationBadge(notifications);
         }
 
         function updateNotificationBadge(notifications) {

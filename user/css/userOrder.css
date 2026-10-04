@@ -19,7 +19,6 @@
     box-sizing: border-box;
 }
 
-/* Itinatago ang mobile dropdown sa desktop */
 .mobile-sidebar-dropdown {
     display: none;
 }
@@ -90,6 +89,10 @@
     flex: 1;
     padding: 40px;
     max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
 }
 
 .transaction-container-box {
@@ -100,7 +103,6 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 160px);
 }
 
 .transaction-main-header {
@@ -165,21 +167,6 @@
     border-color: #000000;
 }
 
-.view-all-transactions {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: #000000;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.view-all-transactions:hover {
-    text-decoration: underline;
-}
-
 /* Dropdown Filters Styles */
 .filter-dropdown-group {
     display: flex;
@@ -204,12 +191,12 @@
     border-color: #000000;
 }
 
-/* List of Orders / Transactions with Scroll Pane */
+/* List of Orders / Transactions with Scroll Pane (Pina-kahaba pababa) */
 .transactions-list {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    flex: 1;
+    max-height: calc(100vh - 350px);
 }
 
 .transaction-card-item {
@@ -351,14 +338,23 @@
 
 .view-details-link {
     font-family: 'Inter', sans-serif;
-    font-size: 0.82rem;
-    color: #2563eb;
+    font-size: 0.8rem;
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 5px 12px;
+    border-radius: 20px;
     text-decoration: none;
     font-weight: 600;
+    display: inline-block;
+    transition: all 0.2s ease;
 }
 
 .view-details-link:hover {
-    text-decoration: underline;
+    background-color: #333333;
+    color: #ffffff;
+    border-color: #333333;
+    text-decoration: none;
 }
 
 /* Modal Styles */
@@ -449,7 +445,6 @@
     background-color: #333333;
 }
 
-/* Notification Popup List Items */
 .notif-item-popup {
     padding: 12px 15px;
     border-bottom: 1px solid #f1f5f9;
@@ -501,9 +496,6 @@ html, body {
     padding: 0;
 }
 
-/* =========================================
-   RESPONSIVE MOBILE VIEW (Dropdown Accordion Sidebar)
-   ========================================= */
 @media (max-width: 900px) {
     html, body {
         overflow: auto;
@@ -516,12 +508,10 @@ html, body {
         min-height: auto;
     }
 
-    /* Itago ang desktop sidebar content sa mobile */
     .desktop-sidebar-content {
         display: none;
     }
 
-    /* Ipakita ang dropdown accordion sa mobile */
     .dashboard-sidebar {
         width: 100%;
         background-color: #ffffff;
@@ -554,7 +544,6 @@ html, body {
         outline: none;
     }
 
-    /* I-rotate ang arrow kapag naka-bukas ang details */
     .mobile-sidebar-dropdown[open] .dropdown-arrow {
         transform: rotate(180deg);
     }
