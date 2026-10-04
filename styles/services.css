@@ -39,7 +39,6 @@ main {
     box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.15);
 }
 
-/* --- NAVBAR STYLES --- */
 .navbar {
     background-color: #000000;
     padding: 18px 5%;
@@ -352,7 +351,6 @@ main {
     transform: rotate(180deg);
 }
 
-/* --- CUSTOM REQUEST SECTION (BABA BAGO ANG FOOTER) --- */
 .custom-request-section {
     padding: 60px 5% 80px 5%;
     max-width: 1200px;
@@ -405,7 +403,6 @@ main {
     transform: translateY(-2px);
 }
 
-/* --- SUBMIT REQUEST MODAL STYLES --- */
 .custom-modal-overlay {
     display: none;
     position: fixed;
@@ -547,7 +544,6 @@ main {
     background-color: #1e293b;
 }
 
-/* --- FOOTER STYLES --- */
 .footer {
     background-color: #000000;
     padding: 70px 5% 30px 5%;
@@ -720,7 +716,6 @@ main {
 .carousel-btn.prev { left: 15px; }
 .carousel-btn.next { right: 15px; }
 
-/* Navbar Right Actions & Notification Styles */
 .nav-right-actions {
     display: flex;
     align-items: center;
@@ -765,7 +760,7 @@ main {
 }
 
 /* =========================================
-   NOTIFICATION MODAL POP-UP STYLES
+   NOTIFICATION MODAL POP-UP STYLES (FB STYLE FIXED)
    ========================================= */
 .notif-modal-overlay {
     display: none;
@@ -944,7 +939,7 @@ main {
         justify-content: flex-end !important;
         align-items: flex-start !important;
         padding: 0 !important;
-        position: absolute !important;
+        position: fixed !important; /* FIXED NA KAHIT NAG-I-SCROLL KA */
         top: 65px !important;
         right: 20px !important;
         width: auto !important;

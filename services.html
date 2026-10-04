@@ -184,7 +184,7 @@
 
 </main>
 
-<!-- SUBMIT REQUEST MODAL (May Red Asterisk na rin ang Reference Image at iba pang fields maliban sa Additional Notes) -->
+<!-- SUBMIT REQUEST MODAL -->
 <div class="custom-modal-overlay" id="serviceRequestModalOverlay">
     <div class="custom-modal-content">
         <div class="custom-modal-header">
@@ -415,12 +415,14 @@
                         image: imgBase64 || 'pics/Logo.jpg',
                         price: '₱0.00',
                         status: 'pending',
+                        type: 'service_request', 
                         submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                     };
 
-                    let pendingOrders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-                    pendingOrders.unshift(newRequest);
-                    localStorage.setItem('ifc_user_orders', JSON.stringify(pendingOrders));
+                    // ✅ Dito na natin ikinonekta sa hiwalay na storage key na 'ifc_product_orders' para diretsong mapunta sa pending orders
+                    let allOrders = JSON.parse(localStorage.getItem('ifc_product_orders')) || [];
+                    allOrders.unshift(newRequest);
+                    localStorage.setItem('ifc_product_orders', JSON.stringify(allOrders));
 
                     let notifications = JSON.parse(localStorage.getItem('ifc_user_notifications')) || [];
                     notifications.unshift({

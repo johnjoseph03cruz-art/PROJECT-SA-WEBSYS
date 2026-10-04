@@ -15,7 +15,6 @@ body {
     background: #f8fafc;
 }
 
-/* Navbar ay hindi gagalaw sa itaas */
 .navbar {
     flex-shrink: 0;
 }
@@ -27,7 +26,6 @@ body {
     margin-top: 80px;
 }
 
-/* Eksaktong Sidebar Styling gaya ng sa userOrder at pendingOrders */
 .dashboard-sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -114,7 +112,6 @@ body {
     min-width: 0;
 }
 
-/* Main Messages Content Box Header */
 .content-header-box {
     background: #ffffff;
     border: 1px solid #cbd5e1;
@@ -133,7 +130,6 @@ body {
     margin: 0;
 }
 
-/* Chat Box Container - Strict Flex Boundary */
 .chat-container-box {
     background: #ffffff;
     border: 1px solid #cbd5e1;
@@ -141,7 +137,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 0; /* Napakahalaga para sa pag-scroll sa loob ng flex */
+    min-height: 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     overflow: hidden;
     position: relative;
@@ -164,7 +160,6 @@ body {
     color: #000000;
 }
 
-/* Chat Status Indicator Styles */
 .chat-status-indicator {
     display: flex;
     align-items: center;
@@ -179,25 +174,24 @@ body {
 }
 
 .status-dot.active {
-    background-color: #22c55e; /* Green circle */
+    background-color: #22c55e;
 }
 
 .status-dot.offline {
-    background-color: #94a3b8; /* Grey dot kapag offline */
+    background-color: #94a3b8;
 }
 
 .status-text {
     font-family: 'Inter', sans-serif;
     font-size: 0.78rem;
-    color: #64748b; /* Grey text */
+    color: #64748b;
     font-weight: 500;
 }
 
-/* Scrollable Messages Pane */
 .chat-messages-scroll {
     flex: 1;
     padding: 20px;
-    overflow-y: auto !important; /* Pwersahang pinapagana ang pag-scroll */
+    overflow-y: auto !important;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -208,7 +202,6 @@ body {
     min-height: 0;
 }
 
-/* Custom Scrollbar Design */
 .chat-messages-scroll::-webkit-scrollbar {
     width: 6px;
 }
@@ -352,8 +345,298 @@ body {
 }
 
 /* =========================================
-   RESPONSIVE MOBILE VIEW (Dropdown Accordion Sidebar)
+   NAVBAR RIGHT ACTIONS & ICONS STYLES (Added for Consistency)
    ========================================= */
+.nav-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 20px;
+    position: relative;
+}
+
+.nav-icon-btn {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.1rem;
+    position: relative;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-icon-btn:hover {
+    transform: scale(1.08);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notif-badge {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: #ef4444;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 10px;
+    line-height: 1;
+}
+
+.profile-icon-only {
+    font-size: 1rem;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #ffffff;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.profile-icon-only:hover {
+    transform: scale(1.08);
+    opacity: 0.85;
+}
+
+/* =========================================
+   NOTIFICATION MODAL POP-UP STYLES (Added for Consistency)
+   ========================================= */
+.notif-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.notif-modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.notif-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.notif-modal-header h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #000000;
+    margin: 0;
+}
+
+.close-notif-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.close-notif-modal:hover {
+    color: #000000;
+}
+
+.notif-tabs-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px 0 20px;
+    background-color: #ffffff;
+}
+
+.notif-tab-btn {
+    background-color: #f1f5f9;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.notif-tab-btn:hover {
+    background-color: #e2e8f0;
+}
+
+.notif-tab-btn.active {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.notif-modal-body {
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notif-item-popup {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.notif-item-popup:hover {
+    background-color: #f1f5f9;
+}
+
+.notif-item-popup.unread {
+    background-color: #f1f5f9;
+    border-left: 4px solid #000000;
+}
+
+.notif-title {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #000000;
+    margin-bottom: 4px;
+}
+
+.notif-desc {
+    font-size: 0.85rem;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.notif-time {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.empty-notif-message {
+    text-align: center;
+    padding: 25px;
+    color: #64748b;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   RESPONSIVE MEDIA QUERIES (Updated for Navbar Consistency)
+   ========================================= */
+@media (min-width: 901px) {
+    .notif-modal-overlay:not(#orderModal) {
+        background-color: transparent !important;
+        justify-content: flex-end !important;
+        align-items: flex-start !important;
+        padding: 0 !important;
+        position: absolute !important;
+        top: 65px !important;
+        right: 20px !important;
+        width: auto !important;
+        height: auto !important;
+        pointer-events: none;
+    }
+
+    .notif-modal-content {
+        pointer-events: auto;
+        width: 400px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+        border: 1px solid #cbd5e1;
+    }
+}
+
+@media (max-width: 1150px) {
+    .hamburger { 
+        display: flex; 
+        order: 3;
+    }
+    
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-area {
+        order: 1;
+    }
+
+    .nav-right-actions {
+        display: flex;
+        align-items: center;
+        order: 2;
+        margin-left: auto;
+        margin-right: 15px;
+        gap: 6px;
+    }
+
+    .nav-icon-btn, .profile-icon-only {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 0;
+        border-bottom: 1px solid #111827;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .nav-links a { 
+        margin: 10px 0; 
+        font-size: 1.05rem; 
+        color: #94a3b8;
+    }
+    .nav-links a:hover { color: #ffffff; }
+    .nav-links a.active { border-bottom: none; color: #ffffff; font-weight: 800; }
+    
+    .menu-toggle:checked ~ .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+    .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+    .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
 @media (max-width: 900px) {
     html, body {
         overflow: auto;

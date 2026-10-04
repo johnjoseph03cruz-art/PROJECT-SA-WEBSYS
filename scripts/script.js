@@ -19,7 +19,7 @@ function initializeCleanState() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   if (!isLoggedIn) {
     localStorage.removeItem('ifc_user_cart');
-    localStorage.removeItem('ifc_user_orders');
+    localStorage.removeItem('ifc_product_orders');
     localStorage.removeItem('ifc_user_profile');
     localStorage.removeItem('ifc_user_transactions');
     localStorage.removeItem('ifc_user_messages');
@@ -47,21 +47,22 @@ function setupSignupFlow() {
       localStorage.setItem('isLoggedIn', 'true');
       
       localStorage.setItem('ifc_user_cart', JSON.stringify([]));
-      localStorage.setItem('ifc_user_orders', JSON.stringify([]));
+      localStorage.setItem('ifc_product_orders', JSON.stringify([]));
       localStorage.setItem('ifc_user_transactions', JSON.stringify([]));
       localStorage.setItem('ifc_user_messages', JSON.stringify([]));
     });
   }
 }
 
-// ✅ FIX BODY SCROLL BUG
+// ✅ FIX BODY SCROLL BUG (HUWAG HAYAANG MA-LOCK ANG SCROLL KAPAG MAY MODAL)
 function fixBodyScrolling() {
   const allModals = document.querySelectorAll('.modal');
   allModals.forEach(modal => {
     modal.addEventListener('hidden.bs.modal', () => {
       document.body.classList.remove('modal-open');
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'auto';
       document.body.style.paddingRight = '';
+      document.documentElement.style.overflow = 'auto';
       
       const backdrops = document.querySelectorAll('.modal-backdrop');
       backdrops.forEach(backdrop => backdrop.remove());
@@ -94,7 +95,6 @@ function showCustomAlert(message, callback = null) {
         return;
     }
 
-    // Fallback kung nasa services page kung saan gamit ang custom alert overlay modal
     const alertOverlay = document.getElementById('customAlertModalOverlay');
     const alertMsg = document.getElementById('customAlertMessage');
     const alertOkBtn = document.getElementById('customAlertOkBtn');
@@ -373,14 +373,15 @@ function setupProductActions() {
                     date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
                     year: String(new Date().getFullYear()),
                     status: 'pending',
+                    type: 'product_order',
                     shipping: 'Taytay, Rizal',
                     payment: 'GCash',
                     receiptImage: receiptBase64
                 };
 
-                let orders = JSON.parse(localStorage.getItem('ifc_user_orders')) || [];
-                orders.unshift(orderItem);
-                localStorage.setItem('ifc_user_orders', JSON.stringify(orders));
+                let productOrders = JSON.parse(localStorage.getItem('ifc_product_orders')) || [];
+                productOrders.unshift(orderItem);
+                localStorage.setItem('ifc_product_orders', JSON.stringify(productOrders));
 
                 let transactions = JSON.parse(localStorage.getItem('ifc_user_transactions')) || [];
                 transactions.unshift(orderItem);

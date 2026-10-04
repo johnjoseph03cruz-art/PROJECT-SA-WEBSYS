@@ -10,20 +10,23 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    height: 100%; /* Tinitiyak na sakop ang buong height ng viewport */
 }
 
 body {
     background-color: #ffffff;
     color: #0f172a;
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+    /* Ginagamit ang overflow-x nang may kaukulang safety para sa scroll container */
+    overflow-x: hidden; 
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 main {
     flex: 1;
+    overflow: visible !important; /* Pinipigilan ang pagkawala o pag-cut off ng mga susunod na seksyon */
 }
 
 .gothic-title {
@@ -436,7 +439,6 @@ main {
     border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Dito sinisigurong pantay ang lalagyan ng litrato at hindi nasisira ang uniform layout */
 .product-img-wrapper {
     width: 100%;
     height: 260px;
@@ -447,7 +449,7 @@ main {
 .product-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Pinipilit nitong magkasya ang iba't ibang size ng image nang hindi nagkakaroon ng distortion o deformed na mukha/hugis */
+    object-fit: cover;
     transition: transform 0.5s ease;
 }
 

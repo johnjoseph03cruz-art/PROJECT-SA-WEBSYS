@@ -529,7 +529,7 @@ body {
 }
 
 /* =========================================
-   NOTIFICATION MODAL STYLES (DASHBOARD STYLE)
+   NOTIFICATION MODAL STYLES (FB STYLE FIXED DROPDOWN)
    ========================================= */
 .notif-modal-overlay {
     display: none;
@@ -672,7 +672,7 @@ body {
 }
 
 /* =========================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (FIXED POSITION FOR DESKTOP)
    ========================================= */
 @media (min-width: 901px) {
     .notif-modal-overlay {
@@ -680,8 +680,8 @@ body {
         justify-content: flex-end !important;
         align-items: flex-start !important;
         padding: 0 !important;
-        position: absolute !important;
-        top: 65px !important;
+        position: fixed !important; /* FIXED NA KAHIT NAG-I-SCROLL KA */
+        top: 65px !important;       /* Naka-angkla malapit sa bell icon sa navbar */
         right: 20px !important;
         width: auto !important;
         height: auto !important;

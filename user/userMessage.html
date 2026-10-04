@@ -37,18 +37,13 @@
             </nav>
 
             <div class="nav-right-actions">
-                <!-- Notification Bell Icon -->
                 <button type="button" class="nav-icon-btn notification-bell-btn" id="notifModalBtn" title="Notifications">
                     <i class="fas fa-bell"></i>
                     <span class="notif-badge" id="navNotifBadge" style="display: none;">0</span>
                 </button>
-
-                <!-- Cart Icon -->
                 <a href="userCart.html" class="nav-icon-btn" title="Shopping Cart">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
-
-                <!-- Profile Icon -->
                 <a href="profile.html" class="profile-icon-only" title="User Profile">
                     <i class="fas fa-user"></i>
                 </a>
@@ -63,7 +58,6 @@
                 <h3>Notifications</h3>
                 <button type="button" class="close-notif-modal" id="closeNotifModal">&times;</button>
             </div>
-            <!-- Notification Filter Tabs (All / Unread) -->
             <div class="notif-tabs-container">
                 <button type="button" class="notif-tab-btn active" id="tabAllNotif">All</button>
                 <button type="button" class="notif-tab-btn" id="tabUnreadNotif">Unread</button>
@@ -93,7 +87,6 @@
         
         <!-- Sidebar Navigation -->
         <aside class="dashboard-sidebar">
-            <!-- Mobile View Dropdown Accordion Wrapper -->
             <details class="mobile-sidebar-dropdown">
                 <summary class="sidebar-dropdown-toggle">
                     <span><i class="fas fa-bars"></i> Menu</span>
@@ -126,7 +119,6 @@
                 </div>
             </details>
 
-            <!-- Desktop View Regular Sidebar -->
             <div class="desktop-sidebar-content">
                 <div class="sidebar-menu-group">
                     <a href="userDashboard.html" class="sidebar-item">
@@ -157,7 +149,6 @@
         <!-- Main Content Area -->
         <main class="dashboard-main-content">
             
-            <!-- Messages Content Box -->
             <div class="dashboard-content-area" style="width: 100%;">
                 <div class="content-header-box" style="margin-bottom: 20px;">
                     <h1>Messages</h1>
@@ -182,7 +173,6 @@
 
                     <!-- Input Footer -->
                     <div class="chat-input-footer">
-                        <!-- Attachment Popup Menu -->
                         <div class="attachment-popup-menu" id="attachmentMenu">
                             <button class="attachment-option" onclick="triggerFileInput('file')">
                                 <i class="fas fa-folder"></i> Send file
@@ -192,7 +182,6 @@
                             </button>
                         </div>
 
-                        <!-- Hidden File Inputs -->
                         <input type="file" id="hiddenFileInput" style="display: none;" onchange="handleFileSelected(event)">
 
                         <input type="text" class="chat-text-input" id="chatInputText" placeholder="Send message..." onkeypress="checkEnterKey(event)">
@@ -238,7 +227,7 @@
 
         const tabAll = document.getElementById('tabAllNotif');
         const tabUnread = document.getElementById('tabUnreadNotif');
-        let currentNotifFilter = 'all'; // Default filter
+        let currentNotifFilter = 'all';
 
         if (notifBtn) {
             notifBtn.addEventListener('click', () => {
