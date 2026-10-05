@@ -1,12 +1,5 @@
 [
   {
-  "name": "Test Product Layout",
-  "size": "Medium",
-  "price": "₱150",
-  "image": "images/medium/Nitro_Wallpaper_01_3840x2400.jpg",
-  "description": "Testing kung pantay ba ang itsura ng image container."
-},
-  {
     "name": "Anatomical Heart",
     "image": "images/small/AnatomicalHeart.jpg",
     "size": "Small",
